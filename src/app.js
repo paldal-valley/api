@@ -1,8 +1,26 @@
 import express from 'express'
-import margan from 'morgan'
+import morgan from 'morgan'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 import 'dotenv/config'
+
+import api from './routes'
 
 const app = express()
 
-console.log(fs)
+app.set('port', process.env.PORT || 3001)
+
+app.use(morgan('dev'))
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({
+  urlencoded: true,
+  limit: '50mb',
+  parameterLimit: 1000000
+}))
+app.use('/', api)
+
+app.listen(app.get('port'), () => {
+  console.log(`Server is running on port ${app.get('port')}`)
+})
