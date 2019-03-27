@@ -13,6 +13,18 @@ const add = async (req, res, next) => {
   }
 }
 
+const get = async (req, res, next) => {
+ 
+  try {
+    const result = await Test.get()
+    return res.status(200).json(result)
+  } catch (err) {
+    return res.status(500).json({
+      msg: err
+    })
+  }
+}
+
 export {
-  add,
+  add, get,
 }
