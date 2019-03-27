@@ -5,7 +5,7 @@ const add = injection => {
   return new Promise((resolve, reject) => {
     const sql = `
     INSERT INTO
-      userss
+      users
     SET
       ?
     `
