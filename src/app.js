@@ -21,6 +21,12 @@ app.use(bodyParser.urlencoded({
 }))
 app.use('/', api)
 
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), () => {
   console.log(`Server is running on port ${app.get('port')}`)
 })
+
+// For API test
+export default {
+  app,
+  server
+}
