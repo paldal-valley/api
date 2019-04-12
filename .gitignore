@@ -7,3 +7,6 @@ coverage/
 # Configuration Files
 .env
 .coveralls.yml
+
+# Coverage output
+.nyc_output

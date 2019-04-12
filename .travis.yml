@@ -1,5 +1,8 @@
 language: node_js
 node_js:
-- "stable"
+- stable
 after_success:
 - npm run coveralls
+before_install:
+- openssl aes-256-cbc -K $encrypted_8ef018dbaa66_key -iv $encrypted_8ef018dbaa66_iv
+  -in .env.enc -out .env -d
