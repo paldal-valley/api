@@ -7,6 +7,7 @@ coverage/
 # Configuration Files
 .env
 .coveralls.yml
+.travis.yml
 
 # Coverage output
 .nyc_output
