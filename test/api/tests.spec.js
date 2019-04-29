@@ -7,7 +7,7 @@ describe('Tests api Suite', function() {
     foo.server.close()
   })
 
-  describe('GET /tests/', function(){
+  describe('User Test', function(){
     let getSuccess
     let getFail
 
@@ -23,7 +23,11 @@ describe('Tests api Suite', function() {
       }
     })
 
-    it ('tests 테이블 모든 내용 가져오기', async function() {
+    it ('GET /user | 모든 유저 불러오기', async function() {
+      await getSuccess()
+    })
+
+    it ('POST /user | 유저 저장', async function() {
       await getSuccess()
     })
   })
