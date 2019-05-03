@@ -11,3 +11,6 @@ coverage/
 
 # Coverage output
 .nyc_output
+
+# IDE
+.idea
