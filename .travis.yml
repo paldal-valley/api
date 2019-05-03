@@ -13,8 +13,8 @@ before_deploy: # 배포하기전 하는 작업들
   - mv paldalvalley-server.zip deploy/paldalvalley-server.zip # deploy 디렉터리로 node-koa-server.zip 파일을 이동
 deploy: # 배포
   - provider: s3 # AWS S3를 의미
-    access_key_id: "AKIA2LHEQCBWVTWKQ636" # Travis repo settings에 설정된 값
-    secret_access_key: "RLDy47l4lmbsNcC+UBMHTyvpKk28cv5HAnDaLzII" # Travis repo settings에 설정된 값
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
     bucket: "paldalvalley-ci-cd" # S3에 생성한 버킷
     region: ap-northeast-2
     skip_cleanup: true
@@ -24,8 +24,8 @@ deploy: # 배포
       repo: paldal-valley/api #Github 주소
       branch: master
   - provider: codedeploy # AWS CodeDeploy를 의미
-    access_key_id: "AKIA2LHEQCBWVTWKQ636" # Travis repo settings에 설정된 값
-    secret_access_key: "RLDy47l4lmbsNcC+UBMHTyvpKk28cv5HAnDaLzII" # Travis repo settings에 설정된 값
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
     bucket: "paldalvalley-ci-cd" # AWS CodeDeploy가 다운로드 받은 버킷
     key: paldalvalley-server.zip # 해당 버킷에 저장되어 있는 파일 이름
     bundle_type: zip # 버킷에 저장되어 있는 파일의 확장자
