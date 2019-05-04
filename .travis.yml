@@ -9,7 +9,7 @@ before_install:
 before_deploy: # 배포하기전 하는 작업들
   - rm -rf node_modules # travis가 설치한 node_moduels를 삭제
   - ls -al
-  - zip -r paldalvalley-server * # node-koa-server 라는 이름으로 zip 파일 생성
+  - zip -r paldalvalley-server . # node-koa-server 라는 이름으로 zip 파일 생성
   - mkdir -p deploy # deploy 라는 디렉터리를 만듬
   - mv paldalvalley-server.zip deploy/paldalvalley-server.zip # deploy 디렉터리로 node-koa-server.zip 파일을 이동
 deploy: # 배포
@@ -24,7 +24,6 @@ deploy: # 배포
     on:
       repo: paldal-valley/api #Github 주소
       branch: master
-    edge: true
     dot_match: true # dot-started file 포함
   - provider: codedeploy # AWS CodeDeploy를 의미
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -39,8 +38,6 @@ deploy: # 배포
     on:
       repo: paldal-valley/api
       branch: master
-    edge: true
-    dot_match: true
 notifications:
   email:
     recipients:
