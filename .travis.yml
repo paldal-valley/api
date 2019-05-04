@@ -8,7 +8,7 @@ before_install:
   -in .env.enc -out .env -d
 before_deploy: # 배포하기전 하는 작업들
   - rm -rf node_modules # travis가 설치한 node_moduels를 삭제
-  - zip -r paldalvalley-server * # node-koa-server 라는 이름으로 zip 파일 생성
+  - zip -r paldalvalley-server * # paldalvalley-server 라는 이름으로 zip 파일 생성
   - mkdir -p deploy # deploy 라는 디렉터리를 만듬
   - mv paldalvalley-server.zip deploy/paldalvalley-server.zip # deploy 디렉터리로 node-koa-server.zip 파일을 이동
 deploy: # 배포
