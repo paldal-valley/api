@@ -37,6 +37,7 @@ deploy: # 배포
     on:
       repo: paldal-valley/api
       branch: master
+    dot_match: true
 notifications:
   email:
     recipients:
