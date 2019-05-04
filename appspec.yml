@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: ./
+  - source: /
     destination: /home/ubuntu/api
 hooks:
   AfterInstall: # 배포가 끝나면 아래 명령어를 실행
