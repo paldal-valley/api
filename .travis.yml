@@ -23,6 +23,7 @@ deploy: # 배포
     on:
       repo: paldal-valley/api #Github 주소
       branch: master
+    edge: true
     dot_match: true # dot-started file 포함
   - provider: codedeploy # AWS CodeDeploy를 의미
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -37,6 +38,7 @@ deploy: # 배포
     on:
       repo: paldal-valley/api
       branch: master
+    edge: true
     dot_match: true
 notifications:
   email:
