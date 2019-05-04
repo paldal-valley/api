@@ -12,8 +12,8 @@ before_deploy: # 배포하기전 하는 작업들
   - mkdir -p deploy # deploy 라는 디렉터리를 만듬
   - mv paldalvalley-server.zip deploy/paldalvalley-server.zip # deploy 디렉터리로 node-koa-server.zip 파일을 이동
 deploy: # 배포
+  - dot_match: true # dot-started file 포함
   - provider: s3 # AWS S3를 의미
-    dot_match: true # dot-started file 포함
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
     secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
     bucket: "paldalvalley-ci-cd" # S3에 생성한 버킷
