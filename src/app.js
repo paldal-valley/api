@@ -8,7 +8,7 @@ import api from './routes'
 
 const app = express()
 // Test Comment
-app.set('port', process.env.PORT || 3001)
+app.set('port', process.env.PORT || 8000)
 
 app.use(morgan('dev'))
 app.use(cors())
