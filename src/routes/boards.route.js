@@ -8,5 +8,3 @@ router.post('/', add)
 router.get('/', index)
 
 export default router
-
-// test1
