@@ -7,6 +7,8 @@ import 'dotenv/config'
 import api from './routes'
 
 const app = express()
+var routes = require('./routes/index')
+var qnaRouter = require('./routes/boards.route')
 // Test Comment
 app.set('port', process.env.PORT || 8000)
 
@@ -20,6 +22,8 @@ app.use(bodyParser.urlencoded({
   parameterLimit: 1000000
 }))
 app.use('/', api)
+
+
 
 const server = app.listen(app.get('port'), () => {
   console.log(`Server is running on port ${app.get('port')}`)

@@ -27,5 +27,9 @@ connection.connect(err => {
   if (err) return console.error('\nError occurred connecting database.', err)
   console.log(`\nDatabase '${connection.config.database}' is connected.`)
 })
+// const sql = 'SELECT * FROM sandbox.static_majors'
+// connection.query(sql, (err, results, field) => {
+//   console.log(results);
+// })
 
 export default connection

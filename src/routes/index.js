@@ -12,5 +12,6 @@ fs.readdirSync(__dirname)
   )
 
 // router.use('/tests', require('./tests.route').default)
+router.use('/qna', require('./boards.route').default)
 
 export default router
