@@ -17,7 +17,6 @@ const index = async (req, res, next) => {
  
   try {
     const result = await Test.get()
-    
     return res.status(200).json(result)
   } catch (err) {
     return res.status(500).json({
