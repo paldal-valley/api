@@ -4,11 +4,10 @@ import con from '../connection'
 const add = injection => {
   return new Promise((resolve, reject) => {
     const sql = `
-    INSERT INTO sandbox.posts 
-      
-    VALUES('1', '26', '하이', 'that's nono', '3', '3', '2019', '2019', '1', '0');
-      
-
+    INSERT INTO
+      sandbox.static_majors
+    SET
+      ?
     `
 
     con.query(sql, injection, (err, result) => {
@@ -26,15 +25,10 @@ const get = () => {
     SELECT * FROM sandbox.static_majors WHERE id='0';
     `
     // WHERE id='0'
-    // con.query(sql, (err, result) => {
-    //   if (err) return reject(err)
-
-    //   return resolve(result)
-    // })
-    con.query(sql, function(err, rows, fields) {
+    con.query(sql, (err, result) => {
       if (err) return reject(err)
-      console.log(rows)
-      return resolve(rows)
+
+      return resolve(result)
     })
   })
 }
