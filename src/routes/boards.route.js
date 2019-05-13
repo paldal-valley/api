@@ -18,10 +18,8 @@ router.post('/qna',function(req,res){
     console.log("hello22")
 })
 
-router.get('/',function(req,res){
-    // connection.query(sql, (err, results, field) => {
-    //     console.log(results);
-    // })
+router.get('/boards',function(req,res){
+    //res.send('Get request')
 })
 
 
