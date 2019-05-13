@@ -38,7 +38,7 @@ async function send_email(receiver, token) {
     service:"Gmail",
     auth: {
         user: 'qwaserdf@ajou.ac.kr',
-        pass: 'eksldpf2886*'
+        pass: 'password'
     }
   });
 
