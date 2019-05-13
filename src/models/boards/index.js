@@ -4,15 +4,16 @@ import con from '../connection'
 const add = injection => {
   return new Promise((resolve, reject) => {
     const sql = `
-    INSERT INTO
-      tests
-    SET
-      ?
+    INSERT INTO sandbox.posts 
+      
+    VALUES('1', '26', '하이', 'that's nono', '3', '3', '2019', '2019', '1', '0');
+      
+
     `
 
     con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
-
+      console.log(rows)
       return resolve(result)
     })
   })
