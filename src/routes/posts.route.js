@@ -1,6 +1,13 @@
 import { Router } from 'express'
-import { addQuestion, index, addAnswer, getPostId, getAnswers } from '../controllers/posts.controller'
-import { getPostPlazaList } from '../controllers/posts.controller'
+import {
+  addQuestion,
+  index,
+  addAnswer,
+  getPostId,
+  getAnswers,
+  getPostPlaza,
+  getPostPlazaList,
+} from '../controllers/posts.controller'
 
 const router = Router()
 
@@ -10,6 +17,7 @@ router.get('/readQ/:id',getPostId)
 router.get('/readA/:id',getAnswers)
 
 router.get('/plaza', getPostPlazaList)
+router.get('/plaza/:postId', getPostPlaza)
 
 router.get('/', index)
 
