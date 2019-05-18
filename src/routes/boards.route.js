@@ -8,4 +8,11 @@ router.post('/', add)
 
 router.get('/', index)
 
+// router.get('/qna')
+// router.get('/:id', indsssex)
+
+// const index = (req, res, next) => {
+//     let qndId = req.params.id
+// }
+
 export default router
