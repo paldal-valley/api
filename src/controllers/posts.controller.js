@@ -4,7 +4,7 @@ import TestQ from '../models/posts/posts_questions'
 const add = async (req, res, next) => {
   const { body: options } = req
   try {
-    const result = await Post.add(options)
+    const result = await Test.add(options)
     const postId = result.insertId
       // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
     console.log(options)
@@ -15,8 +15,9 @@ const add = async (req, res, next) => {
 //모델 밑에 다른 이름을 선언해서 add 함수를 선언해주고
 //쿼리문에 이름을 posts_questions로 지정해주면 되는 부분.
     try {    
-        const options1 = { "id":1, "postId":postId, "type":0 }
+        const options1 = { "postId":postId, "type":0 }
         const result = await TestQ.add(options1)
+        
         return res.status(200).json(result)
     }catch (err) {
         console.log(err) 
