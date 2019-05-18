@@ -5,20 +5,16 @@ const add = injection => {
   return new Promise((resolve, reject) => {
     const sql = `
     INSERT INTO
-      sandbox.posts
+      sandbox.posts_answers
     SET
       ?
+    
     `
 
-    // con.query(sql, injection, (err, result) => {
-    //   if (err) return reject(err)
-    //   // console.log(rows)
-    //   return resolve(result)
-    // })
-    con.query(sql, injection, (err, rows, fields) => {
+    con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
       // console.log(rows)
-      return resolve(rows)
+      return resolve(result)
     })
   })
 }
@@ -31,15 +27,11 @@ const get = () => {
   return new Promise((resolve, reject) => {
     const sql = 
     `
-      SELECT * FROM sandbox.posts;
+      SELECT * FROM sandbox.posts_answers;
     `
-    // con.query(sql, (err, result) => {
-    //   if (err) return reject(err)
-    //   return resolve(result)
-    // })
-    con.query(sql, (err, rows, fields) => {
+    con.query(sql, (err, result) => {
       if (err) return reject(err)
-      return resolve(rows)
+      return resolve(result)
     })
   })
 }
