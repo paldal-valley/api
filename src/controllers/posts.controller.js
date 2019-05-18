@@ -1,4 +1,4 @@
-import Test from '../models/posts/index'
+import Test from '@dao/posts'
 import TestQ from '../models/posts/posts_questions'
 import PostPlaza from '@dao/posts_plazas'
 
@@ -11,7 +11,6 @@ const add = async (req, res, next) => {
     const result = await Test.add(options0)
     const postId = result.insertId
       // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
-    console.log(options.type)
 //방금 인서트한 postId를 불러올 수 있음.
 //그리고 추가로 type을 받아온 다음에s
 //Test 말고 다른 객체를 하나 선언하고
@@ -50,9 +49,11 @@ const index = async (req, res, next) => {
   }
 }
 
-const getPostPlazaList = async (req, res, next) => {
+const getPostId = async (req, res, next) => {
   try {
-    const result = await PostPlaza.getList()
+    const { params: payload } = req
+    const result = await TestQ.search(payload)
+    //const result = await TestQ.search()
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -60,5 +61,5 @@ const getPostPlazaList = async (req, res, next) => {
 }
 
 export {
-  add, index, getPostPlazaList
+  add, index, getPostId
 }
