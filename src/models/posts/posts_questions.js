@@ -57,12 +57,9 @@ const search = payload => {
     const injection = [postId]
     const sql = `
     SELECT 
-     p.title,
-     p.content,
-     p.view,
-     p.recommended,
-     pq.id,
-     DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate 
+      *,
+      pq.id,
+      DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate 
     FROM
      posts_questions pq
     LEFT JOIN
