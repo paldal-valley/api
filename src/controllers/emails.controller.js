@@ -39,23 +39,8 @@ async function send_email(receiver, token) {
   let transporter = nodemailer.createTransport({
     service:"Gmail",
     auth: {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        user: 'qwaserdf@ajou.ac.kr',
-        pass: 'eksldpf2886*'
-=======
         user: 'paldalvalley@gmail.com',
         pass: 'ajou1234!'
->>>>>>> Stashed changes
-=======
-        user: 'paldalvalley@gmail.com',
-        pass: 'ajou1234!'
->>>>>>> Stashed changes
-=======
-        user: 'paldalvalley@gmail.com',
-        pass: 'ajou1234!'
->>>>>>> Stashed changes
     }
   });
 
