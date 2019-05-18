@@ -4,7 +4,11 @@ const add = async (req, res, next) => {
   const { body: options } = req
   try {
     const result = await Test.add(options)
+<<<<<<< HEAD
     const postId = result
+=======
+    const postId = result.insertId
+>>>>>>> 973f872a6c221acbe88b9db76be7c61d63cd24ec
       // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
       console.log(result)
 //방금 인서트한 postId를 불러올 수 있음.

@@ -10,10 +10,15 @@ const add = injection => {
       ?
     `
 
-    con.query(sql, injection, (err, result) => {
+    // con.query(sql, injection, (err, result) => {
+    //   if (err) return reject(err)
+    //   // console.log(rows)
+    //   return resolve(result)
+    // })
+    con.query(sql, injection, (err, rows, fields) => {
       if (err) return reject(err)
       // console.log(rows)
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
@@ -28,9 +33,13 @@ const get = () => {
     `
       SELECT * FROM posts;
     `
-    con.query(sql, (err, result) => {
+    // con.query(sql, (err, result) => {
+    //   if (err) return reject(err)
+    //   return resolve(result)
+    // })
+    con.query(sql, (err, rows, fields) => {
       if (err) return reject(err)
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
