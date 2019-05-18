@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { addQuestion, index, addAnswer, getPostId } from '../controllers/posts.controller'
-import { getPostPlazaList } from '../controllers/posts.controller'
+import { getPostPlaza, getPostPlazaList } from '../controllers/posts.controller'
 
 const router = Router()
 
@@ -9,7 +9,7 @@ router.post('/answer', addAnswer)
 router.post('/readQ/:id',getPostId)
 
 router.get('/plaza', getPostPlazaList)
-router.post('/plaza')
+router.get('/plaza/:postId', getPostPlaza)
 
 router.get('/', index)
 
