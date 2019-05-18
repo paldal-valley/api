@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { add, index } from '../controllers/boards.controller'
+import { add, index } from '../controllers/posts.controller'
 import { connection } from '../models/connection'
 
 const router = Router()
