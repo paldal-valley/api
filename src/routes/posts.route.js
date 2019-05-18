@@ -6,6 +6,7 @@ const router = Router()
 
 router.post('/', add)
 router.get('/plaza', getPostPlazaList)
+router.post('/plaza')
 
 router.get('/', index)
 

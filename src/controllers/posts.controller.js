@@ -52,7 +52,8 @@ const index = async (req, res, next) => {
 
 const getPostPlazaList = async (req, res, next) => {
   try {
-    const result = await PostPlaza.getList()
+    const { query: options } = req
+    const result = await PostPlaza.getList(options)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
