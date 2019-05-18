@@ -21,7 +21,7 @@ const addQuestion = async (req, res, next) => {
     try {
         const options1 = { "postId":postId /*,"type": type*/ }
         const result = await TestQ.add(options1)
-        
+
         return res.status(200).json(result)
     }catch (err) {
         console.log(err)
@@ -57,7 +57,7 @@ const addAnswer = async (req, res, next) => {
     try {
         const options1 = { "postId":postId }
         const result = await TestA.add(options1)
-        
+
         return res.status(200).json(result)
     }catch (err) {
         console.log(err)
@@ -82,12 +82,12 @@ const index = async (req, res, next) => {
 
   try {
     const result = await Test.get()
-      //   try {    
+      //   try {
       //       const result2 = await TestA.get()
-          
+
       //     return res.status(200).json(result)
       // }catch (err) {
-      //     console.log(err) 
+      //     console.log(err)
       //         return res.status(500).json({
       //             msg : err
       //         })
@@ -115,7 +115,8 @@ const getPostId = async (req, res, next) => {
 
 const getPostPlazaList = async (req, res, next) => {
   try {
-    const result = await PostPlaza.getList()
+    const { query: options } = req
+    const result = await PostPlaza.getList(options)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -132,6 +133,23 @@ const getAnswers = async (req, res, next) => {
   }
 }
 
+const getPostPlaza = async (req, res, next) => {
+  try {
+    const { postId = 0 } = req.params
+    const { query: options } = req.query
+    const result = await PostPlaza.getOne(postId, options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 export {
-  addQuestion, addAnswer, index, getPostPlazaList, getPostId, getAnswers
+  addQuestion,
+  addAnswer,
+  index,
+  getPostPlaza,
+  getPostPlazaList,
+  getPostId,
+  getAnswers
 }
