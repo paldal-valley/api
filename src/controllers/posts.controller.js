@@ -19,7 +19,7 @@ const addQuestion = async (req, res, next) => {
 //모델 밑에 다른 이름을 선언해서 add 함수를 선언해주고
 //쿼리문에 이름을 posts_questions로 지정해주면 되는 부분.
     try {
-        const options1 = { "postId":postId, "type": type }
+        const options1 = { "postId":postId /*,"type": type*/ }
         const result = await TestQ.add(options1)
         
         return res.status(200).json(result)

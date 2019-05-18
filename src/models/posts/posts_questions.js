@@ -57,14 +57,21 @@ const search = payload => {
     const injection = [postId]
     const sql = `
     SELECT 
-     p.id,
      p.title,
      p.content,
+     p.view,
+     p.recommended,
+     pq.id,
      DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate 
-    FROM 
-      sandbox.posts p
-    WHERE 
-      id= ?`
+    FROM
+     posts_questions pq
+    LEFT JOIN
+     posts p
+    ON
+     p.id = pq.postId
+   WHERE
+     p.id = ?
+     ;`
     //con.query(sql, injection, (err, result)
     con.query(sql, injection,(err, rows, fields) => {
       if (err) return reject(err)
