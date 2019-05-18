@@ -5,7 +5,7 @@ const add = injection => {
   return new Promise((resolve, reject) => {
     const sql = `
     INSERT INTO
-      sandbox.posts
+      sandbox.posts_questions
     SET
       ?
     `
