@@ -1,4 +1,4 @@
-import Test from '../models/boards'
+import Test from '../models/posts'
 // import PostQuestion from '../models/boards'
 const add = async (req, res, next) => {
   const { body: options } = req

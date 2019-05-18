@@ -8,12 +8,12 @@ const add = injection => {
       sandbox.posts_questions
     SET
       ?
+    
     `
-
-    con.query(sql, injection, (err, result) => {
+    con.query(sql, injection, (err, rows, fields) => {
       if (err) return reject(err)
       // console.log(rows)
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
@@ -26,7 +26,7 @@ const get = () => {
   return new Promise((resolve, reject) => {
     const sql = 
     `
-      SELECT * FROM posts;
+      SELECT * FROM sandbox.posts_questions;
     `
     con.query(sql, (err, result) => {
       if (err) return reject(err)
@@ -35,21 +35,49 @@ const get = () => {
   })
 }
 
-// GET menber tests
-const search = memv => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-    SELECT * FROM tests;
-    `
+// // GET tests
+// const get2 = () => {
+//   return new Promise((resolve, reject) => {
+//     const sql = `
+//     SELECT * FROM 
+//       sandbox.posts;
+//     WHERE 
+//       id=74`
+//     con.query(sql, (err, result) => {
+//       if (err) return reject(err)
+//       return resolve(result)
+//     })
+//   })
+// }
 
-    con.query(sql, (err, result) => {
+// GET menber tests
+const search = payload => {
+  return new Promise((resolve, reject) => {
+    const { id: postId } = payload
+    const injection = [postId]
+    const sql = `
+    SELECT 
+      *,
+      pq.id,
+      DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate 
+    FROM
+     posts_questions pq
+    LEFT JOIN
+     posts p
+    ON
+     p.id = pq.postId
+   WHERE
+     p.id = ?
+     ;`
+    //con.query(sql, injection, (err, result)
+    con.query(sql, injection,(err, rows, fields) => {
       if (err) return reject(err)
 
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
 
 export default {
-  add, get
+  add, get, search
 }
