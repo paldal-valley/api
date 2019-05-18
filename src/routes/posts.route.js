@@ -1,10 +1,11 @@
 import { Router } from 'express'
-import { add, index, Qindex } from '../controllers/posts.controller'
-import { connection } from '../models/connection'
+import { add, index } from '../controllers/boards.controller'
+import { getPostPlazaList } from '../controllers/posts.controller'
 
 const router = Router()
 
 router.post('/', add)
+router.get('/plaza', getPostPlazaList)
 
 router.get('/', index)
 
