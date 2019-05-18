@@ -27,7 +27,7 @@ const get = () => {
   return new Promise((resolve, reject) => {
     const sql = 
     `
-      SELECT * FROM posts;
+      SELECT * FROM sandbox.posts_questions;
     `
     con.query(sql, (err, result) => {
       if (err) return reject(err)

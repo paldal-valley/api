@@ -40,6 +40,16 @@ const index = async (req, res, next) => {
  
   try {
     const result = await Test.get()
+    try {    
+        const result2 = await TestQ.get()
+      
+      return res.status(200).json(result)
+  }catch (err) {
+      console.log(err) 
+          return res.status(500).json({
+              msg : err
+          })
+      }
     return res.status(200).json(result)
   } catch (err) {
     console.error(err)
@@ -47,6 +57,7 @@ const index = async (req, res, next) => {
       msg: err
     })
   }
+
 }
 
 export {
