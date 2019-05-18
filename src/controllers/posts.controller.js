@@ -1,16 +1,13 @@
-import Test from '../models/posts'
-// import PostQuestion from '../models/boards'
+import Post from '../models/posts/index'
+import PostQuestion from '../models/posts/posts_questions'
 const add = async (req, res, next) => {
   const { body: options } = req
   try {
-    const result = await Test.add(options)
-<<<<<<< HEAD
-    const postId = result
-=======
+    const result = await Post.add(options)
     const postId = result.insertId
->>>>>>> 973f872a6c221acbe88b9db76be7c61d63cd24ec
       // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
-      console.log(result)
+    options = res
+    // const qnaResult = await PostQuestion.add(options)
 //방금 인서트한 postId를 불러올 수 있음.
 //그리고 추가로 type을 받아온 다음에
 //Test 말고 다른 객체를 하나 선언하고

@@ -6,8 +6,6 @@ const add = injection => {
     const sql = `
     INSERT INTO
       sandbox.posts
-    SET
-      ?
     `
 
     // con.query(sql, injection, (err, result) => {
