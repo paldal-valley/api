@@ -37,13 +37,28 @@ const get = () => {
 }
 
 // GET menber tests
-const search = memv => {
+const search = payload => {
   return new Promise((resolve, reject) => {
+    const { id: postId } = payload
+    const injection = [postId]
     const sql = `
-    SELECT * FROM tests;
+    SELECT
+     p.id,
+     p.title,
+     p.content,
+     DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
+   FROM
+     posts_answers pa
+   LEFT JOIN
+     posts p
+   ON
+     p.id = pa.postsId
+   WHERE
+     pa.postId_Q = ?
+     ;
     `
 
-    con.query(sql, (err, result) => {
+    con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
 
       return resolve(result)
@@ -52,5 +67,5 @@ const search = memv => {
 }
 
 export default {
-  add, get
+  add, get, search
 }

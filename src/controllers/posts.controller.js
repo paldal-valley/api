@@ -1,5 +1,5 @@
 import Test from '@dao/posts'
-import TestQ from '../models/posts/posts_questions'
+import TestQ from '@dao/posts/posts_questions'
 import TestA from '../models/posts/posts_answers'
 import PostPlaza from '@dao/posts_plazas'
 
@@ -105,8 +105,8 @@ const index = async (req, res, next) => {
 const getPostId = async (req, res, next) => {
   try {
     const { params: payload } = req
+    //console.log(payload)
     const result = await TestQ.search(payload)
-    //const result = await TestQ.search()
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -122,6 +122,16 @@ const getPostPlazaList = async (req, res, next) => {
   }
 }
 
+const getAnswers = async (req, res, next) => {
+  try {
+    const { params: payload } = req
+    const result = await TestA.search(payload)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 export {
-  addQuestion, addAnswer, index, getPostPlazaList, getPostId
+  addQuestion, addAnswer, index, getPostPlazaList, getPostId, getAnswers
 }

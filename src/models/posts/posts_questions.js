@@ -10,11 +10,10 @@ const add = injection => {
       ?
     
     `
-
-    con.query(sql, injection, (err, result) => {
+    con.query(sql, injection, (err, rows, fields) => {
       if (err) return reject(err)
       // console.log(rows)
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
@@ -57,15 +56,20 @@ const search = payload => {
     const { id: postId } = payload
     const injection = [postId]
     const sql = `
-    SELECT * FROM 
-      sandbox.posts
+    SELECT 
+     p.id,
+     p.title,
+     p.content,
+     DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate 
+    FROM 
+      sandbox.posts p
     WHERE 
       id= ?`
     //con.query(sql, injection, (err, result)
-    con.query(sql, injection,(err, result) => {
+    con.query(sql, injection,(err, rows, fields) => {
       if (err) return reject(err)
 
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
