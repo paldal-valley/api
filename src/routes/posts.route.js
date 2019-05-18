@@ -1,11 +1,19 @@
 import { Router } from 'express'
-import { add } from '../controllers/boards.controller'
+import { add, index } from '../controllers/boards.controller'
 import { getPostPlazaList } from '../controllers/posts.controller'
+
 const router = Router()
 
 router.post('/', add)
 router.get('/plaza', getPostPlazaList)
 
-export default router
+router.get('/', index)
 
-// test1
+// router.get('/qna')
+// router.get('/:id', indsssex)
+
+// const index = (req, res, next) => {
+//     let qndId = req.params.id
+// }
+
+export default router
