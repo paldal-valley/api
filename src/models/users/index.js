@@ -1,5 +1,6 @@
 import con from '../connection'
 import bcrypt from 'bcrypt-nodejs'
+import auth from '../../middlewares/auth/index'
 
 //해시 알고리즘 적용 횟수
 var SALT_FACTOR = 5;
@@ -31,7 +32,7 @@ const add = injection => {
 }
 
 // LOGIN
-const search = information => {
+const login = information => {
   return new Promise(async (resolve, reject) => {
     const sql = `
     SELECT * FROM
@@ -44,14 +45,43 @@ const search = information => {
         if ('code' in err) return resolve(err.code)
         return reject(err)
       }
+      const user_info = JSON.parse(JSON.stringify(result))
       try{
-        const user_info = JSON.parse(JSON.stringify(result))
+        if(user_info.length == 0) return reject() // id 틀렸을 때
         var check = await password_check(information.password, user_info[0].password)
       } catch (err) {
         return reject(err)
       }
-      if(check) return resolve(result)
-      return resolve("none");
+      if(check) {
+        const accessToken = auth.signToken(user_info[0].userId);
+        return resolve({ accessToken: accessToken, userId: user_info[0].userId });
+      }
+      return reject(); //password 틀렸을 때
+    })
+  })
+}
+
+// email duplication check
+const email_dup_check = information => {
+  return new Promise(async (resolve, reject) => {
+    const sql = `
+    SELECT * FROM
+     users
+    WHERE
+      email = ?
+    `
+    con.query(sql, information.email, async (err, result) => {
+      if (err){ 
+        if ('code' in err) return resolve(err.code)
+        return reject(err)
+      }
+      try{
+        const user_info = JSON.parse(JSON.stringify(result))
+        if(user_info.length == 0) return resolve() // email ok
+        return reject("email_dup")
+      } catch (err) {
+        return reject(err)
+      }
     })
   })
 }
@@ -83,5 +113,5 @@ const password_check = (guess_password, real_password) => {
 }
 
 export default {
-  add, search
+  add, login, email_dup_check
 }
