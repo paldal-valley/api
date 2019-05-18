@@ -1,10 +1,10 @@
-import Test from '../models/boards'
+import Test from '../models/posts'
 // import PostQuestion from '../models/boards'
 const add = async (req, res, next) => {
   const { body: options } = req
   try {
     const result = await Test.add(options)
-    const postId = result.insert_id
+    const postId = result.insertId
       // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
     console.log(postId)
 //방금 인서트한 postId를 불러올 수 있음.
