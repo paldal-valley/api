@@ -2,7 +2,6 @@ import Test from '../models/boards'
 // import PostQuestion from '../models/boards'
 const add = async (req, res, next) => {
   const { body: options } = req
-1.tv
   try {
     const result = await Test.add(options)
     const postId = result.insert_id
