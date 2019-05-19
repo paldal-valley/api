@@ -58,7 +58,9 @@ const getOne = (id = 0, options = {}) => {
     FROM
       posts p
     WHERE
-      p.id = ?
+      p.id = ? AND
+      p.isDeleted = 0 AND
+      p.isPending = 0
     `
     con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
@@ -68,7 +70,45 @@ const getOne = (id = 0, options = {}) => {
   })
 }
 
+const addOne = (payload = {}) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+    INSERT INTO
+      posts_plazas
+    SET
+      ?
+    `
+    con.query(sql, payload, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
+
+const updateOne = (id = 0, payload = {}) => {
+  return new Promise((resolve, reject) => {
+    const injection = [payload, id]
+    const sql = `
+    UPDATE
+      posts_plazas
+    SET
+      ?
+    WHERE
+      id = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
+
+
 export default {
+  addOne,
   getOne,
-  getList
+  getList,
+  updateOne
 }
