@@ -7,19 +7,27 @@ import {
   getAnswers,
   getPostPlaza,
   getPostPlazaList,
+  addPostPlaza,
+  updatePostPlaza,
+  deletePost
 } from '../controllers/posts.controller'
 
 const router = Router()
 
+router.get('/', index)
 router.post('/', addQuestion)
 router.post('/answer', addAnswer)
-router.get('/readQ/:id',getPostId)
-router.get('/readA/:id',getAnswers)
+router.get('/readQ/:id', getPostId)
+router.get('/readA/:id', getAnswers)
 
+router.delete('/:postId', deletePost)
+
+// plaza
 router.get('/plaza', getPostPlazaList)
-router.get('/plaza/:postId', getPostPlaza)
+router.post('/plaza', addPostPlaza)
 
-router.get('/', index)
+router.get('/plaza/:postId', getPostPlaza)
+router.put('/plaza/:postId', updatePostPlaza)
 
 //router.get('/questions', Qindex)
 //router.get('/:id', getPostId)
