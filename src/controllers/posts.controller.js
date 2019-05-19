@@ -209,10 +209,10 @@ const getPostPlazaList = async (req, res, next) => {
 const addPostPlaza = async (req, res, next) => {
   try {
     const { body: payload } = req
-    const { category } = req.query
+    const { categoryId } = req.query
     const { insertId: postId } = await Post.addOne(payload)
 
-    const result = await PostPlaza.addOne({ postId, category })
+    const result = await PostPlaza.addOne({ postId, categoryId })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
