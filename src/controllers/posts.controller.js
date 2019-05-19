@@ -3,6 +3,7 @@ import PostQA from '@dao/posts/posts_qna'
 import TestQ from '@dao/posts/posts_questions'
 import TestA from '../models/posts/posts_answers'
 import PostPlaza from '@dao/posts_plazas'
+import PostR from '@dao/posts_review'
 
 // import PostQuestion from '../models/boards'
 const addQuestion = async (req, res, next) => {
@@ -235,6 +236,33 @@ const updatePostPlaza = async (req, res, next) => {
   }
 }
 
+
+/* ------------ Review ------------- */
+
+const getPostReview = async (req, res, next) => {
+  try {
+    const { postId = 0 } = req.params
+    const { query: options } = req.query
+    const result = await PostR.getOne(postId, options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const getPostReviewList = async (req, res, next) => {
+  try {
+    const { query: options } = req
+    const result = await PostR.getList(options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+
+
+
 export {
   addQuestion,
   addAnswer,
@@ -247,5 +275,7 @@ export {
   deletePost,
   updatePostPlaza,
   getPostQnA,
-  getPostQnAList
+  getPostQnAList,
+  getPostReviewList,
+  getPostReview
 }
