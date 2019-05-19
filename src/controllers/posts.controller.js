@@ -58,7 +58,6 @@ const addAnswer = async (req, res, next) => {
     try {
         const options1 = { "postId":postId }
         const result = await TestA.add(options1)
-
         return res.status(200).json(result)
     }catch (err) {
         console.log(err)
