@@ -78,6 +78,12 @@ const search = payload => {
   })
 }
 
+
+
+
+
+
+
 export default {
-  add, get, search
+  add, get, search, 
 }
