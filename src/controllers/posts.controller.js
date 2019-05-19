@@ -1,4 +1,5 @@
 import Post from '@dao/posts'
+import PostQA from '@dao/posts/posts_qna'
 import TestQ from '@dao/posts/posts_questions'
 import TestA from '../models/posts/posts_answers'
 import PostPlaza from '@dao/posts_plazas'
@@ -130,6 +131,61 @@ const deletePost = async (req, res, next) => {
   }
 }
 
+
+/* ------ QnA refactoring ------ */
+
+const getPostQnA = async (req, res, next) => {
+  try {
+    const { postId = 0 } = req.params
+    const { query: options } = req.query
+    const result = await PostQA.getOne(postId, options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const getPostQnAList = async (req, res, next) => {
+  try {
+    const { query: options } = req
+    const result = await PostQA.getList(options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const addPostQnA = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { category } = req.query
+    const { insertId: postId } = await Post.addOne(payload)
+
+    const result = await PostQA.addOne({ postId, category })
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const updatePostQnA = async (req, res, next) => {
+  try {
+    // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
+    const { body: payload } = req
+    const { postId } = req.params
+    const result = await Post.updateOne(postId, payload)
+    // await PostPlaza.updateOne(payload)
+
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+
+
+
+
 /* ----- Plaza ----- */
 
 const getPostPlaza = async (req, res, next) => {
@@ -190,5 +246,7 @@ export {
   getAnswers,
   addPostPlaza,
   deletePost,
-  updatePostPlaza
+  updatePostPlaza,
+  getPostQnA,
+  getPostQnAList
 }

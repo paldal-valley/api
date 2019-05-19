@@ -9,7 +9,9 @@ import {
   getPostPlazaList,
   addPostPlaza,
   updatePostPlaza,
-  deletePost
+  deletePost,
+  getPostQnAList,
+  getPostQnA
 } from '../controllers/posts.controller'
 
 const router = Router()
@@ -17,7 +19,7 @@ const router = Router()
 router.get('/', index)
 router.post('/', addQuestion)
 router.post('/answer', addAnswer)
-router.get('/readQ/:id', getPostId)
+router.get('/qna/:id', getPostId) //readQ
 router.get('/readA/:id', getAnswers)
 
 router.delete('/:postId', deletePost)
@@ -28,6 +30,13 @@ router.post('/plaza', addPostPlaza)
 
 router.get('/plaza/:postId', getPostPlaza)
 router.put('/plaza/:postId', updatePostPlaza)
+
+//qna modifying
+router.get('/qna',getPostQnAList)
+//router.post('/qna', addPostQnA)
+
+router.get('/qna/:postId',getPostQnA)
+//router.put('/qna/:postId', updatePostQnA)
 
 //router.get('/questions', Qindex)
 //router.get('/:id', getPostId)
