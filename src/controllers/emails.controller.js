@@ -1,4 +1,4 @@
-import Test from '../models/tests'
+import User from '../models/users'
 
 const add = async (req, res, next) => {
   const { body: options } = req
@@ -17,6 +17,8 @@ const send_confirm_email = async (req, res, next) => {
   const { body: options } = req
 
   try {
+    await User.email_dup_check(options)
+    console.log(options)
     send_email(options.email, options.token);
     return res.status(200).json({
       msg: "success"
@@ -37,8 +39,13 @@ async function send_email(receiver, token) {
   let transporter = nodemailer.createTransport({
     service:"Gmail",
     auth: {
+<<<<<<< HEAD
         user: 'qwaserdf@ajou.ac.kr',
         pass: 'password'
+=======
+        user: 'paldalvalley@gmail.com',
+        pass: 'ajou1234!'
+>>>>>>> feature/login
     }
   });
 
