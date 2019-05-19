@@ -2,17 +2,17 @@ import con from '@db'
 
 const getList = (options = {}) => {
   return new Promise((resolve, reject) => {
-    const { limit = 5, category = 0 } = options
+    const { limit = 5, categoryId = 0 } = options
     const should = () => {
       const array = ['WHERE p.isDeleted = 0', 'AND p.isPending = 0']
-      if (category) array.push('AND pr.category = ?')
+      if (categoryId) array.push('AND pr.categoryId = ?')
 
       return array.join(' ')
     }
 
     const injection = []
 
-    if (category) injection.push(Number(category))
+    if (categoryId) injection.push(Number(categoryId))
 
     injection.push(Number(limit))
 
@@ -23,6 +23,7 @@ const getList = (options = {}) => {
       p.content,
       p.view,
       p.recommended,
+      pr.categoryId,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
     FROM
       posts_reviews pr
@@ -54,9 +55,14 @@ const getOne = (id = 0, options = {}) => {
       p.title,
       p.content,
       p.recommended,
+      pr.categoryId,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
     FROM
+      posts_reviews pr
+    LEFT JOIN
       posts p
+    ON
+      pr.postId = p.id
     WHERE
       p.id = ? AND
       p.isDeleted = 0 AND

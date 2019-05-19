@@ -158,10 +158,10 @@ const getPostQnAList = async (req, res, next) => {
 const addPostQnA = async (req, res, next) => {
   try {
     const { body: payload } = req
-    const { category } = req.query
+    const { categoryId } = req.query
     const { insertId: postId } = await Post.addOne(payload)
 
-    const result = await PostQA.addOne({ postId, category })
+    const result = await PostQA.addOne({ postId, categoryId })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
