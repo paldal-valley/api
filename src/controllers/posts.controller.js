@@ -1,7 +1,7 @@
-import Test from '@dao/posts'
-import TestQ from '../models/posts/posts_questions'
-import TestA from '../models/posts/posts_answers'
-import PostPlaza from '@dao/posts_plazas'
+// import Test from '@dao/posts'
+// import TestQ from '../models/posts/posts_questions'
+// import TestA from '../models/posts/posts_answers'
+// import PostPlaza from '@dao/posts_plazas'
 
 // import PostQuestion from '../models/boards'
 const addQuestion = async (req, res, next) => {
