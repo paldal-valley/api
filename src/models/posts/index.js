@@ -17,37 +17,36 @@ const addOne = injection => {
   })
 }
 
-// GET tests
-const getOne = () => {
+const getOne = (id = 0) => {
   return new Promise((resolve, reject) => {
+    const injection = [id]
     const sql = `
-      SELECT 
-        * 
-      FROM 
-        posts;
+    SELECT 
+      * 
+    FROM 
+      posts
+    WHERE
+      id = ?
     `
-    // con.query(sql, (err, result) => {
-    //   if (err) return reject(err)
-    //   return resolve(result)
-    // })
-    con.query(sql, (err, rows, fields) => {
+    con.query(sql, injection, (err, rows, fields) => {
       if (err) return reject(err)
       return resolve(rows)
     })
   })
 }
 
-// GET menber tests
-const search = memv => {
+// GET tests
+const getList = () => {
   return new Promise((resolve, reject) => {
     const sql = `
-    SELECT * FROM tests;
+    SELECT 
+      * 
+    FROM 
+      posts
     `
-
-    con.query(sql, (err, result) => {
+    con.query(sql, (err, rows, fields) => {
       if (err) return reject(err)
-
-      return resolve(result)
+      return resolve(rows)
     })
   })
 }
@@ -93,6 +92,7 @@ const updateOne = (id = 0, payload = {}) => {
 export default {
   addOne,
   getOne,
+  getList,
   deleteOne,
   updateOne
 }

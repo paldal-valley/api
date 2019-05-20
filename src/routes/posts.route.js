@@ -1,65 +1,48 @@
 import { Router } from 'express'
 import {
-  addQuestion,
-  index,
-  addAnswer,
-  getPostId,
-  getAnswers,
+  getPost,
+  getPostList,
+  addPost,
+  updatePost,
+  deletePost,
   getPostPlaza,
   getPostPlazaList,
   addPostPlaza,
   updatePostPlaza,
-  deletePost,
-  getPostQnAList,
-  getPostQnA,
-  addPostQnA,
+  getPostQuestionList,
+  getPostQuestion,
+  addPostQuestion,
+  updatePostQuestion,
   getPostReviewList,
   getPostReview,
-  addPostReview
+  addPostReview,
+  updatePostReview,
 } from '../controllers/posts.controller'
-
 const router = Router()
-
-router.get('/', index)
-//router.post('/', addQuestion)
-router.post('/answer', addAnswer)
-// router.get('/qna/:id', getPostId) //readQ
-router.get('/readA/:id', getAnswers)
-router.get('/readQ/:id', getPostId)
-
-
-router.delete('/:postId', deletePost)
 
 // plaza
 router.get('/plaza', getPostPlazaList)
-router.post('/plaza', addPostPlaza)
-
 router.get('/plaza/:postId', getPostPlaza)
+router.post('/plaza', addPostPlaza)
 router.put('/plaza/:postId', updatePostPlaza)
 
-//qna modifying
-router.get('/qna',getPostQnAList)
-router.post('/qna', addPostQnA)
+// Question
+router.get('/question', getPostQuestionList)
+router.get('/question/:postId',getPostQuestion)
+router.post('/question', addPostQuestion)
+router.put('/question/:postId', updatePostQuestion)
 
-router.get('/qna/:postId',getPostQnA)
-//router.put('/qna/:postId', updatePostQnA)
-
-//reveiw modifying
-router.get('/review',getPostReviewList)
+// reveiw
+router.get('/review', getPostReviewList)
+router.get('/review/:postId', getPostReview)
 router.post('/review', addPostReview)
-//router.post('/qna', addPostQnA)
+router.put('/review/:postId', updatePostReview)
 
-router.get('/review/:postId',getPostReview)
-//router.put('/qna/:postId', updatePostQnA)
-
-
-
-
-//router.get('/questions', Qindex)
-//router.get('/:id', getPostId)
-
-// const index = (req, res, next) => {
-//     let qndId = req.params.id
-// }
+// post general
+router.get('/', getPostList)
+router.get('/:postId', getPost)
+router.post('/', addPost)
+router.delete('/:postId', deletePost)
+router.put('/:postId', updatePost)
 
 export default router
