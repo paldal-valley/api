@@ -1,122 +1,49 @@
 import Post from '@dao/posts'
-import PostQA from '@dao/posts/posts_qna'
-import TestQ from '@dao/posts/posts_questions'
-import TestA from '../models/posts/posts_answers'
 import PostPlaza from '@dao/posts_plazas'
-import PostR from '@dao/posts_review'
+import PostQuestion from '@dao/posts_questions'
+import PostReview from '@dao/posts_review'
 
-// import PostQuestion from '../models/boards'
-const addQuestion = async (req, res, next) => {
-  const { body: options } = req
-  //let options0 = { "userId":options.userId, "title":options.title, "content":options.content }
-  const type = options.type
+const addPost = async (req, res, next) => {
   try {
-    const result = await Post.addOne(options)
-    const postId = result.insertId
-      // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
-//방금 인서트한 postId를 불러올 수 있음.
-//그리고 추가로 type을 받아온 다음에s
-//Post 말고 다른 객체를 하나 선언하고
-//그 객체에서 add를 시켜줌.
-//모델 밑에 다른 이름을 선언해서 add 함수를 선언해주고
-//쿼리문에 이름을 posts_questions로 지정해주면 되는 부분.
-    // try {
-    //     const options1 = { "postId":postId /*,"type": type*/ }
-    //     const result = await TestQ.add(options1)
-
-    //     return res.status(200).json(result)
-    // }catch (err) {
-    //     console.log(err)
-    //         return res.status(500).json({
-    //             msg : err
-    //         })
-    //     }
+    const { body: payload } = req
+    const result = await Post.addOne(payload)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
 }
 
-
-const addAnswer = async (req, res, next) => {
-  const { body: options } = req
-  let options0 = { "userId":options.userId, "title":options.title, "content":options.content }
-  const type = options.type
+const getPost = async (req, res, next) => {
   try {
-    const result = await Post.addOne(options0)
-    const postId = options.postId
-      // 근데 여기서 insert_id가 아무 것도 안찍힘. 뭔지 알아봐야 함.
-    console.log(options.postId)
-//방금 인서트한 postId를 불러올 수 있음.
-//그리고 추가로 type을 받아온 다음에s
-//Post 말고 다른 객체를 하나 선언하고
-//그 객체에서 add를 시켜줌.
-//모델 밑에 다른 이름을 선언해서 add 함수를 선언해주고
-//쿼리문에 이름을 posts_questions로 지정해주면 되는 부분.
-    try {
-        const options1 = { "postId":postId }
-        const result = await TestA.add(options1)
-        return res.status(200).json(result)
-    }catch (err) {
-        console.log(err)
-            return res.status(500).json({
-                msg : err
-            })
-        }
-    return res.status(200).json(result)
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      msg: err
-    })
-  }
-}
-
-const index = async (req, res, next) => {
-
-  try {
-    const result = await Post.getOne()
-      //   try {
-      //       const result2 = await TestA.get()
-
-      //     return res.status(200).json(result)
-      // }catch (err) {
-      //     console.log(err)
-      //         return res.status(500).json({
-      //             msg : err
-      //         })
-      //     }
-    return res.status(200).json(result)
-  } catch (err) {
-    console.error(err)
-    return res.status(500).json({
-      msg: err
-    })
-  }
-
-}
-
-const getPostId = async (req, res, next) => {
-  try {
-    const { params: payload } = req
-    //console.log(payload)
-    const result = await TestQ.search(payload)
+    const { postId } = req.params
+    const result = await Post.getOne(postId)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
 }
 
-
-const getAnswers = async (req, res, next) => {
+const getPostList = async (req, res, next) => {
   try {
-    const { params: payload } = req
-    const result = await TestA.search(payload)
+    const result = await Post.getList()
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
 }
+
+const updatePost = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { postId } = req.params
+    const result = await Post.updateOne(postId, payload)
+
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 
 const deletePost = async (req, res, next) => {
   try {
@@ -128,44 +55,43 @@ const deletePost = async (req, res, next) => {
   }
 }
 
+/* ------------ Qna ------------- */
 
-/* ------ QnA refactoring ------ */
-
-const getPostQnA = async (req, res, next) => {
+const getPostQuestion = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostQA.getOne(postId, options)
+    const result = await PostQuestion.getOne(postId, options)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
 }
 
-const getPostQnAList = async (req, res, next) => {
+const getPostQuestionList = async (req, res, next) => {
   try {
     const { query: options } = req
-    const result = await PostQA.getList(options)
+    const result = await PostQuestion.getList(options)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
 }
 
-const addPostQnA = async (req, res, next) => {
+const addPostQuestion = async (req, res, next) => {
   try {
     const { body: payload } = req
     const { categoryId } = req.query
     const { insertId: postId } = await Post.addOne(payload)
 
-    const result = await PostQA.addOne({ postId, categoryId })
+    const result = await PostQuestion.addOne({ postId, categoryId })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
 }
 
-const updatePostQnA = async (req, res, next) => {
+const updatePostQuestion = async (req, res, next) => {
   try {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
     const { body: payload } = req
@@ -179,7 +105,7 @@ const updatePostQnA = async (req, res, next) => {
   }
 }
 
-/* ----- Plaza ----- */
+/* ------------ Plaza ------------- */
 
 const getPostPlaza = async (req, res, next) => {
   try {
@@ -238,7 +164,7 @@ const addPostReview = async (req, res, next) => {
     const { categoryId } = req.query
     const { insertId: postId } = await Post.addOne(payload)
 
-    const result = await PostR.addOne({ postId, categoryId })
+    const result = await PostReview.addOne({ postId, categoryId })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -249,7 +175,7 @@ const getPostReview = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostR.getOne(postId, options)
+    const result = await PostReview.getOne(postId, options)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -259,7 +185,21 @@ const getPostReview = async (req, res, next) => {
 const getPostReviewList = async (req, res, next) => {
   try {
     const { query: options } = req
-    const result = await PostR.getList(options)
+    const result = await PostReview.getList(options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const updatePostReview = async (req, res, next) => {
+  try {
+    // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
+    const { body: payload } = req
+    const { postId } = req.params
+    const result = await Post.updateOne(postId, payload)
+    // await PostPlaza.updateOne(payload)
+
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -267,23 +207,22 @@ const getPostReviewList = async (req, res, next) => {
 }
 
 
-
-
 export {
-  addQuestion,
-  addAnswer,
-  index,
+  getPost,
+  getPostList,
+  addPost,
+  updatePost,
+  deletePost,
   getPostPlaza,
   getPostPlazaList,
-  getPostId,
-  getAnswers,
   addPostPlaza,
-  deletePost,
   updatePostPlaza,
-  getPostQnA,
-  addPostQnA,
-  getPostQnAList,
-  getPostReviewList,
+  getPostQuestion,
+  getPostQuestionList,
+  addPostQuestion,
+  updatePostQuestion,
   getPostReview,
-  addPostReview
+  getPostReviewList,
+  addPostReview,
+  updatePostReview,
 }
