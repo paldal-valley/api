@@ -5,7 +5,7 @@ const getList = (options = {}) => {
     const { limit = 5, categoryId = 0 } = options
     const should = () => {
       const array = ['WHERE p.isDeleted = 0', 'AND p.isPending = 0']
-      if (categoryId) array.push('AND pp.categoryId = ?')
+      if (categoryId) array.push('AND pr.categoryId = ?')
 
       return array.join(' ')
     }
@@ -23,14 +23,14 @@ const getList = (options = {}) => {
       p.content,
       p.view,
       p.recommended,
-      pp.categoryId,
+      pr.categoryId,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
     FROM
-      posts_plazas pp
+      posts_reviews pr
     LEFT JOIN
       posts p
     ON
-      p.id = pp.postId
+      p.id = pr.postId
     
     ${should()}
     
@@ -55,14 +55,14 @@ const getOne = (id = 0, options = {}) => {
       p.title,
       p.content,
       p.recommended,
-      pp.categoryId,
+      pr.categoryId,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
     FROM
-      posts_plazas pp
+      posts_reviews pr
     LEFT JOIN
       posts p
     ON
-      pp.postId = p.id
+      pr.postId = p.id
     WHERE
       p.id = ? AND
       p.isDeleted = 0 AND
@@ -80,7 +80,7 @@ const addOne = (payload = {}) => {
   return new Promise((resolve, reject) => {
     const sql = `
     INSERT INTO
-      posts_plazas
+      posts_reviews
     SET
       ?
     `
@@ -97,7 +97,7 @@ const updateOne = (id = 0, payload = {}) => {
     const injection = [payload, id]
     const sql = `
     UPDATE
-      posts_plazas
+      posts_reviews
     SET
       ?
     WHERE
