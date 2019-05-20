@@ -1,14 +1,13 @@
-import con from '../connection'
+import con from '@db'
 
 // POST: Q&A 게시판에 글 작성
 const add = injection => {
   return new Promise((resolve, reject) => {
     const sql = `
     INSERT INTO
-      sandbox.posts_answers
+      posts_answers
     SET
       ?
-    
     `
 
     con.query(sql, injection, (err, result) => {
@@ -25,9 +24,9 @@ const add = injection => {
 // GET tests
 const get = () => {
   return new Promise((resolve, reject) => {
-    const sql = 
-    `
-      SELECT * FROM sandbox.posts_answers;
+    const sql =
+      `
+      SELECT * FROM posts_answers;
     `
     con.query(sql, (err, result) => {
       if (err) return reject(err)
