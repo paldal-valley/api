@@ -19,9 +19,9 @@ const add = injection => {
     } catch (err) {
       reject(err)
     }
-    
+
     con.query(sql, injection, (err, result) => {
-      if (err){ 
+      if (err){
         if ('code' in err) return resolve(err.code)
         return reject(err)
       }
@@ -41,11 +41,12 @@ const login = information => {
       userId = ?
     `
     con.query(sql, information.userId, async (err, result) => {
-      if (err){ 
+      if (err){
         if ('code' in err) return resolve(err.code)
         return reject(err)
       }
       const user_info = JSON.parse(JSON.stringify(result))
+      console.log(user_info)
       try{
         if(user_info.length == 0) return reject() // id 틀렸을 때
         var check = await password_check(information.password, user_info[0].password)
@@ -54,7 +55,7 @@ const login = information => {
       }
       if(check) {
         const accessToken = auth.signToken(user_info[0].userId);
-        return resolve({ accessToken: accessToken, userId: user_info[0].userId });
+        return resolve({ accessToken, userName: user_info[0].userName, id: `${user_info[0].id}` });
       }
       return reject(); //password 틀렸을 때
     })
@@ -71,7 +72,7 @@ const email_dup_check = information => {
       email = ?
     `
     con.query(sql, information.email, async (err, result) => {
-      if (err){ 
+      if (err){
         if ('code' in err) return resolve(err.code)
         return reject(err)
       }

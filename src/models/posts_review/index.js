@@ -80,7 +80,7 @@ const addOne = (payload = {}) => {
   return new Promise((resolve, reject) => {
     const sql = `
     INSERT INTO
-      posts_plazas
+      posts_reviews
     SET
       ?
     `
@@ -97,7 +97,7 @@ const updateOne = (id = 0, payload = {}) => {
     const injection = [payload, id]
     const sql = `
     UPDATE
-      posts_plazas
+      posts_reviews
     SET
       ?
     WHERE

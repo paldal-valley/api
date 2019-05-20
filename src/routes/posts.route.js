@@ -14,7 +14,8 @@ import {
   getPostQnA,
   addPostQnA,
   getPostReviewList,
-  getPostReview
+  getPostReview,
+  addPostReview
 } from '../controllers/posts.controller'
 
 const router = Router()
@@ -45,6 +46,7 @@ router.get('/qna/:postId',getPostQnA)
 
 //reveiw modifying
 router.get('/review',getPostReviewList)
+router.post('/review', addPostReview)
 //router.post('/qna', addPostQnA)
 
 router.get('/review/:postId',getPostReview)

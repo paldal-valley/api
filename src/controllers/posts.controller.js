@@ -179,10 +179,6 @@ const updatePostQnA = async (req, res, next) => {
   }
 }
 
-
-
-
-
 /* ----- Plaza ----- */
 
 const getPostPlaza = async (req, res, next) => {
@@ -236,6 +232,19 @@ const updatePostPlaza = async (req, res, next) => {
 
 /* ------------ Review ------------- */
 
+const addPostReview = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { categoryId } = req.query
+    const { insertId: postId } = await Post.addOne(payload)
+
+    const result = await PostR.addOne({ postId, categoryId })
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 const getPostReview = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
@@ -275,5 +284,6 @@ export {
   addPostQnA,
   getPostQnAList,
   getPostReviewList,
-  getPostReview
+  getPostReview,
+  addPostReview
 }
