@@ -113,6 +113,33 @@ const password_check = (guess_password, real_password) => {
   })
 }
 
+const getOneByEmail = (email = '') => {
+  return new Promise((resolve, reject) => {
+    const injection = [email]
+    const sql = `
+    SELECT
+      u.id,
+      u.email,
+      u.userId,
+      u.userName,
+      u.password,
+      u.walletAddress
+    FROM
+      users u
+    WHERE
+      u.email = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result[0])
+    })
+  })
+}
+
 export default {
-  add, login, email_dup_check
+  add,
+  login,
+  email_dup_check,
+  getOneByEmail
 }
