@@ -8,7 +8,7 @@ const login = async (req, res, next) => {
     const result = await User.login(options)
     console.log(result)
     return res.status(200).json(result)
-  } catch (err) { 
+  } catch (err) {
     return res.status(500).json({
       msg: err
     })
@@ -16,7 +16,7 @@ const login = async (req, res, next) => {
 }
 
 const check = async (req, res, next) => {
- 
+
     try {
       return res.status(200).json({msg: "chiheon"})
     } catch (err) {
