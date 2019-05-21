@@ -20,6 +20,8 @@ import {
 } from '../controllers/posts.controller'
 const router = Router()
 
+import { isLoggedIn } from '@middle/auth'
+
 // plaza
 router.get('/plaza', getPostPlazaList)
 router.get('/plaza/:postId', getPostPlaza)

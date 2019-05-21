@@ -1,7 +1,7 @@
 const Slack = require('slack-node');
- 
+
 const webhookUri = "https://hooks.slack.com/services/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";
- 
+
 const slack = new Slack()
 slack.setWebhook(webhookUri)
 const send = async(message) => {
@@ -14,9 +14,8 @@ const send = async(message) => {
   });
 }
 
-
 export default (err, req, res, next) => {
-  if (process.env.NODE_ENV === 'production') { 
+  if (process.env.NODE_ENV === 'production') {
     send(err.message)
 
     console.log('Middleware Error22')
