@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 const saltRounds = Number(process.env.PASSWORD_SALT_ROUND)
 

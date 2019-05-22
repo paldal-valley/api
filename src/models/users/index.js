@@ -1,5 +1,5 @@
 import con from '../connection'
-import bcrypt from 'bcrypt-nodejs'
+import bcrypt from 'bcryptjs'
 import auth from '../../middlewares/auth/index'
 
 //해시 알고리즘 적용 횟수
