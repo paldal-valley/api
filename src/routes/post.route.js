@@ -18,9 +18,9 @@ import {
   addPostReview,
   updatePostReview,
 } from '../controllers/posts.controller'
-const router = Router()
+import { isLoggedIn, emailDupCheck } from '@middle/auth'
 
-import { isLoggedIn } from '@middle/auth'
+const router = Router()
 
 // plaza
 router.get('/plaza', getPostPlazaList)

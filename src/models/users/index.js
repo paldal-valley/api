@@ -1,5 +1,5 @@
 import con from '../connection'
-import bcrypt from 'bcrypt-nodejs'
+import bcrypt from 'bcryptjs'
 import auth from '../../middlewares/auth/index'
 
 //해시 알고리즘 적용 횟수
@@ -137,9 +137,49 @@ const getOneByEmail = (email = '') => {
   })
 }
 
+const addOne = (injection = {}) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+    INSERT INTO
+      users
+    SET
+      ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
+
+const emailDupCheck = (email = '') => {
+  return new Promise((resolve, reject) => {
+    if (!email) reject(Error('email is empty'))
+
+    const injection = [email]
+    const sql = `
+    SELECT
+      COUNT(u.email) AS existence
+    FROM
+      users u
+    WHERE
+      u.email = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      const existence = result[0].existence
+      return !existence ? resolve(true) : reject(Error('email already exist'))
+    })
+  })
+}
+
 export default {
   add,
   login,
   email_dup_check,
-  getOneByEmail
+  addOne,
+  getOneByEmail,
+  emailDupCheck
 }

@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { add } from '../controllers/users.controller'
+import { addUser } from '../controllers/users.controller'
+import { emailDupCheck } from '@middle/auth'
+
 const router = Router()
 
-router.post('/', add)
+router.post('/', emailDupCheck, addUser)
 
 export default router
-
-// user
