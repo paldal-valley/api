@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { tryLogin } from '../controllers/login2.controller'
-
+import { authCheck, tryLogin } from '../controllers/auth.controller'
+import { isLoggedIn } from '@middle/auth'
 const router = Router()
 
-router.post('/', tryLogin)
+router.get('/', isLoggedIn, authCheck)
+router.post('/login', tryLogin)
 
 export default router

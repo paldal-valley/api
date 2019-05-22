@@ -24,27 +24,27 @@ import { isLoggedIn } from '@middle/auth'
 
 // plaza
 router.get('/plaza', getPostPlazaList)
-router.get('/plaza/:postId', getPostPlaza)
-router.post('/plaza', addPostPlaza)
-router.put('/plaza/:postId', updatePostPlaza)
+router.get('/plaza/:postId', isLoggedIn, getPostPlaza)
+router.post('/plaza', isLoggedIn, addPostPlaza)
+router.put('/plaza/:postId', isLoggedIn, updatePostPlaza)
 
 // Question
 router.get('/question', getPostQuestionList)
-router.get('/question/:postId',getPostQuestion)
-router.post('/question', addPostQuestion)
-router.put('/question/:postId', updatePostQuestion)
+router.get('/question/:postId', isLoggedIn, getPostQuestion)
+router.post('/question', isLoggedIn, addPostQuestion)
+router.put('/question/:postId', isLoggedIn, updatePostQuestion)
 
 // reveiw
 router.get('/review', getPostReviewList)
-router.get('/review/:postId', getPostReview)
-router.post('/review', addPostReview)
-router.put('/review/:postId', updatePostReview)
+router.get('/review/:postId', isLoggedIn, getPostReview)
+router.post('/review', isLoggedIn, addPostReview)
+router.put('/review/:postId', isLoggedIn, updatePostReview)
 
 // post general
 router.get('/', getPostList)
-router.get('/:postId', getPost)
-router.post('/', addPost)
-router.delete('/:postId', deletePost)
-router.put('/:postId', updatePost)
+router.get('/:postId', isLoggedIn, getPost)
+router.post('/', isLoggedIn, addPost)
+router.delete('/:postId', isLoggedIn, deletePost)
+router.put('/:postId', isLoggedIn, updatePost)
 
 export default router
