@@ -1,6 +1,13 @@
 import User from '@dao/users'
 import { encryption, jwt } from '@utils'
 
+const authCheck = async (req, res, next) => {
+  return res.status(200).json({
+    success: true,
+    user: req.me
+  })
+}
+
 const tryLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body
@@ -27,5 +34,6 @@ const tryLogin = async (req, res, next) => {
 }
 
 export {
+  authCheck,
   tryLogin
 }
