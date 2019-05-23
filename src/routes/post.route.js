@@ -17,7 +17,7 @@ import {
   getPostReview,
   addPostReview,
   updatePostReview,
-} from '../controllers/posts.controller'
+} from '../controllers/post.controller'
 import { isLoggedIn, emailDupCheck } from '@middle/auth'
 
 const router = Router()

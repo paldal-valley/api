@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getStatics } from '../controllers/statics.controller'
+import { getStatics } from '../controllers/static.controller'
 const router = Router()
 
 router.get('/', getStatics)
