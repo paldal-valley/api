@@ -120,8 +120,8 @@ const getOneByEmail = (email = '') => {
     SELECT
       u.id,
       u.email,
-      u.userId,
-      u.userName,
+      u.name,
+      u.name,
       u.password,
       u.walletAddress
     FROM

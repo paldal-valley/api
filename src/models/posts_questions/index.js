@@ -28,13 +28,22 @@ const getOne = (id = 0, options = {}) => {
       p.content,
       p.recommended,
       pq.categoryId,
-      DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
+      u.id AS userId,
+      u.name AS userName,
+      u.majorId AS userMajorId,
+      u.email AS userEmail,
+      DATE_FORMAT(p.createdDate, "%Y. %m. %d / %h:%i %p") AS createdDate
     FROM
       posts_questions pq
-    LEFT JOIN
+    JOIN
       posts p
     ON
       pq.postId = p.id
+    JOIN
+      users u
+    ON
+      u.id = p.userId
+      
     WHERE
       p.id = ? AND
       p.isDeleted = 0 AND
@@ -43,7 +52,8 @@ const getOne = (id = 0, options = {}) => {
     con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
 
-      return resolve(result[0])
+      if (result[0]) return resolve(result[0])
+      return resolve({})
     })
   })
 }
@@ -91,13 +101,21 @@ const getList = (options = {}) => {
       p.view,
       p.recommended,
       pq.categoryId,
-      DATE_FORMAT(p.createdDate, "%Y. %m. %d") AS createdDate
+      u.id AS userId,
+      u.name AS userName,
+      u.majorId AS userMajorId,
+      u.email AS userEmail,
+      DATE_FORMAT(p.createdDate, "%Y. %m. %d / %h:%i %p") AS createdDate
     FROM
       posts_questions pq
-    LEFT JOIN
+    JOIN
       posts p
     ON
       p.id = pq.postId
+    JOIN
+      users u
+    ON
+      u.id = p.userId
     
     ${should()}
     
