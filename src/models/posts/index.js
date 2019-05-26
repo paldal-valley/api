@@ -28,9 +28,9 @@ const getOne = (id = 0) => {
     WHERE
       id = ?
     `
-    con.query(sql, injection, (err, rows, fields) => {
+    con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
-      return resolve(rows)
+      return resolve(result[0])
     })
   })
 }
@@ -73,7 +73,6 @@ const deleteOne = (id = 0) => {
 const updateOne = (id = 0, payload = {}) => {
   return new Promise((resolve, reject) => {
     const injection = [payload, id]
-    console.log(injection)
     const sql = `
     UPDATE
       posts

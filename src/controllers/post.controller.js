@@ -55,7 +55,7 @@ const deletePost = async (req, res, next) => {
   }
 }
 
-/* ------------ Qna ------------- */
+/* ------------ Question ------------- */
 
 const getPostQuestion = async (req, res, next) => {
   try {
