@@ -18,7 +18,9 @@ import {
   addPostReview,
   updatePostReview,
 } from '../controllers/post.controller'
-import { isLoggedIn, emailDupCheck } from '@middle/auth'
+
+import { hasPost } from '@middle/ownable'
+import { isLoggedIn } from '@middle/auth'
 
 const router = Router()
 
@@ -26,25 +28,25 @@ const router = Router()
 router.get('/plaza', getPostPlazaList)
 router.get('/plaza/:postId', isLoggedIn, getPostPlaza)
 router.post('/plaza', isLoggedIn, addPostPlaza)
-router.put('/plaza/:postId', isLoggedIn, updatePostPlaza)
+router.put('/plaza/:postId', isLoggedIn, hasPost, updatePostPlaza)
 
 // Question
 router.get('/question', getPostQuestionList)
 router.get('/question/:postId', isLoggedIn, getPostQuestion)
 router.post('/question', isLoggedIn, addPostQuestion)
-router.put('/question/:postId', isLoggedIn, updatePostQuestion)
+router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
 
 // reveiw
 router.get('/review', getPostReviewList)
 router.get('/review/:postId', isLoggedIn, getPostReview)
 router.post('/review', isLoggedIn, addPostReview)
-router.put('/review/:postId', isLoggedIn, updatePostReview)
+router.put('/review/:postId', isLoggedIn, hasPost, updatePostReview)
 
 // post general
 router.get('/', getPostList)
 router.get('/:postId', isLoggedIn, getPost)
 router.post('/', isLoggedIn, addPost)
-router.delete('/:postId', isLoggedIn, deletePost)
-router.put('/:postId', isLoggedIn, updatePost)
+router.delete('/:postId', isLoggedIn, hasPost, deletePost)
+router.put('/:postId', isLoggedIn, hasPost, updatePost)
 
 export default router
