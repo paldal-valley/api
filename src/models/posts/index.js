@@ -73,6 +73,7 @@ const deleteOne = (id = 0) => {
 const updateOne = (id = 0, payload = {}) => {
   return new Promise((resolve, reject) => {
     const injection = [payload, id]
+    console.log(injection)
     const sql = `
     UPDATE
       posts

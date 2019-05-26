@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { addUser } from '../controllers/users.controller'
+import { addUser } from '../controllers/user.controller'
 import { emailDupCheck } from '@middle/auth'
 
 const router = Router()
