@@ -119,7 +119,7 @@ const updateOne = (id = 0, payload = {}) => {
     SET
       ?
     WHERE
-      id = ?
+      postId = ?
     `
     con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
