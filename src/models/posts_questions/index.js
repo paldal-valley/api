@@ -23,7 +23,7 @@ const getOne = (id = 0, options = {}) => {
     const injection = [id]
     const sql = `
     SELECT
-      p.id,
+      pq.id,
       p.title,
       p.content,
       p.recommended,
@@ -116,7 +116,7 @@ const getList = (options = {}) => {
       users u
     ON
       u.id = p.userId
-    
+      
     ${should()}
     
     ORDER BY p.createdDate DESC

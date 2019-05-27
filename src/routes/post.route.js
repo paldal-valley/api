@@ -17,6 +17,8 @@ import {
   getPostReview,
   addPostReview,
   updatePostReview,
+  getPostAnswerList,
+  addPostAnswer,
 } from '../controllers/post.controller'
 
 import { hasPost } from '@middle/ownable'
@@ -35,6 +37,11 @@ router.get('/question', getPostQuestionList)
 router.get('/question/:postId', isLoggedIn, getPostQuestion)
 router.post('/question', isLoggedIn, addPostQuestion)
 router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
+
+// Answer
+router.get('/answer/:postId',getPostAnswerList)
+//router.post('/answer/:postId',isLoggedIn,addPostAnswer)
+router.post('/answer/:postId',addPostAnswer)
 
 // reveiw
 router.get('/review', getPostReviewList)
