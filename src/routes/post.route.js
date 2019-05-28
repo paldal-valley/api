@@ -39,9 +39,9 @@ router.post('/question', isLoggedIn, addPostQuestion)
 router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
 
 // Answer
-router.get('/answer/:postId',getPostAnswerList)
+router.get('/answer/:postId',isLoggedIn,getPostAnswerList)
 //router.post('/answer/:postId',isLoggedIn,addPostAnswer)
-router.post('/answer/:postId',addPostAnswer)
+router.post('/answer/:postId',isLoggedIn,addPostAnswer)
 
 // reveiw
 router.get('/review', getPostReviewList)
