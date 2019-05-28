@@ -75,11 +75,11 @@ const getList = (options = {}) => {
       c.id,
       c.content,
       c.userId,
-      c.createdDate,
-      c.lastModifiedDate,
       u.name AS userName,
       u.majorId AS userMajorId,
-      u.email AS userEmail
+      u.email AS userEmail,
+      DATE_FORMAT(c.createdDate, "%Y. %m. %d / %h:%i %p") AS createdDate,
+      DATE_FORMAT(c.lastModifiedDate, "%Y. %m. %d / %h:%i %p") AS lastModifiedDate
       
     FROM
       comments c
