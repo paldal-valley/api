@@ -28,6 +28,7 @@ const getList = (options = {}) => {
       u.name AS userName,
       u.majorId AS userMajorId,
       u.email AS userEmail,
+      COUNT(covering.postId) AS totalComment,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d / %h:%i %p") AS createdDate
     FROM
       posts_plazas pp
@@ -39,9 +40,22 @@ const getList = (options = {}) => {
       users u
     ON
       u.id = p.userId
-    
+    LEFT JOIN
+      (
+        SELECT
+            refId AS postId
+        FROM
+            sandbox.comments
+        WHERE
+            refType = 2 AND
+            isDeleted <> 1
+      ) AS covering
+    ON
+      covering.postId = p.id
+      
     ${should()}
     
+    GROUP by p.id
     ORDER BY p.createdDate DESC
     
     LIMIT ?
