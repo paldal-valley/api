@@ -24,7 +24,7 @@ const addUser = async (req, res, next) => {
     const { body: userInfo } = req
     if (!userInfo.email) return next(Error('email is required'))
     if (!userInfo.password) return next(Error('password is required'))
-    if (!userInfo.userName) return next(Error('userName is required'))
+    if (!userInfo.name) return next(Error('name is required'))
     if (!userInfo.walletAddress) return next(Error('walletAddress is required'))
 
     userInfo.password = encryption.createPassword(userInfo.password)

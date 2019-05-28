@@ -1,6 +1,7 @@
 import Post from '@dao/posts'
 import PostPlaza from '@dao/posts_plazas'
 import PostQuestion from '@dao/posts_questions'
+import PostAnswer from '@dao/posts_answers'
 import PostReview from '@dao/posts_review'
 import Comment from '@dao/comments'
 
@@ -107,6 +108,61 @@ const updatePostQuestion = async (req, res, next) => {
     return next(err)
   }
 }
+
+
+/* ------------ Answer ------------- */
+
+// const getPostAnswer = async (req, res, next) => {
+//   try {
+//     const { postId = 0 } = req.params
+//     const { query: options } = req.query
+//     const result = await PostQuestion.getOne(postId, options)
+//     return res.status(200).json(result)
+//   } catch (err) {
+//     return next(err)
+//   }
+// }
+
+const getPostAnswerList = async (req, res, next) => {
+  try {
+    const { query: options } = req
+    const result = await PostAnswer.getList(options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const addPostAnswer = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { postId_Q } = req.query
+    const { insertId: postId } = await Post.addOne(payload)
+
+    const result = await PostAnswer.addOne({ postId, postId_Q })
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+// const updatePostAnswer = async (req, res, next) => {
+//   try {
+//     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
+//     const { body: payload } = req
+//     const { categoryId } = req.query
+//     const { postId } = req.params
+//     await Post.updateOne(postId, payload)
+
+//     await PostAnswer.updateOne(postId, { categoryId })
+
+//     return res.status(200).json({ success: true })
+//   } catch (err) {
+//     return next(err)
+//   }
+// }
+
+
 
 /* ------------ Plaza ------------- */
 
@@ -238,4 +294,6 @@ export {
   getPostReviewList,
   addPostReview,
   updatePostReview,
+  getPostAnswerList,
+  addPostAnswer,
 }
