@@ -19,7 +19,7 @@ const add = injection => {
     } catch (err) {
       reject(err)
     }
-
+    
     con.query(sql, injection, (err, result) => {
       if (err){
         if ('code' in err) return resolve(err.code)
@@ -120,7 +120,6 @@ const getOneByEmail = (email = '') => {
     SELECT
       u.id,
       u.email,
-      u.name,
       u.name,
       u.password,
       u.walletAddress

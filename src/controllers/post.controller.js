@@ -3,6 +3,7 @@ import PostPlaza from '@dao/posts_plazas'
 import PostQuestion from '@dao/posts_questions'
 import PostAnswer from '@dao/posts_answers'
 import PostReview from '@dao/posts_review'
+import Comment from '@dao/comments'
 
 const addPost = async (req, res, next) => {
   try {
@@ -62,8 +63,13 @@ const getPostQuestion = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostQuestion.getOne(postId, options)
-    return res.status(200).json(result)
+    const comments = await Comment.getListByPostId(postId)
+    const post = await PostQuestion.getOne(postId, options)
+
+    return res.status(200).json({
+      ...post,
+      comments
+    })
   } catch (err) {
     return next(err)
   }
@@ -169,13 +175,19 @@ const getPostPlaza = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostPlaza.getOne(postId, options)
-    return res.status(200).json(result)
+    const comments = await Comment.getListByPostId(postId)
+    const post = await PostPlaza.getOne(postId, options)
+
+    return res.status(200).json({
+      ...post,
+      comments
+    })
   } catch (err) {
     return next(err)
   }
 }
 
+// TODO: 댓글 개수 함께 리턴하기
 const getPostPlazaList = async (req, res, next) => {
   try {
     const { query: options } = req
@@ -235,8 +247,13 @@ const getPostReview = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostReview.getOne(postId, options)
-    return res.status(200).json(result)
+    const comments = await Comment.getListByPostId(postId)
+    const post = await PostReview.getOne(postId, options)
+
+    return res.status(200).json({
+      ...post,
+      comments
+    })
   } catch (err) {
     return next(err)
   }
