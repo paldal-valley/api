@@ -63,8 +63,13 @@ const getPostQuestion = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostQuestion.getOne(postId, options)
-    return res.status(200).json(result)
+    const comments = await Comment.getListByPostId(postId)
+    const post = await PostQuestion.getOne(postId, options)
+
+    return res.status(200).json({
+      ...post,
+      comments
+    })
   } catch (err) {
     return next(err)
   }
@@ -242,8 +247,13 @@ const getPostReview = async (req, res, next) => {
   try {
     const { postId = 0 } = req.params
     const { query: options } = req.query
-    const result = await PostReview.getOne(postId, options)
-    return res.status(200).json(result)
+    const comments = await Comment.getListByPostId(postId)
+    const post = await PostReview.getOne(postId, options)
+
+    return res.status(200).json({
+      ...post,
+      comments
+    })
   } catch (err) {
     return next(err)
   }
