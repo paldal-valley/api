@@ -105,12 +105,14 @@ const addPostQuestion = async (req, res, next) => {
 const updatePostQuestion = async (req, res, next) => {
   try {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
-    const { body: payload } = req
+    const { body } = req
+    const { post, postQuestion } = body
     const { categoryId } = req.query
+    const { reward } = postQuestion
     const { postId } = req.params
-    await Post.updateOne(postId, payload)
+    await Post.updateOne(postId, post)
 
-    await PostQuestion.updateOne(postId, { categoryId })
+    await PostQuestion.updateOne(postId, { categoryId, reward })
 
     return res.status(200).json({ success: true })
   } catch (err) {
