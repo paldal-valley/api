@@ -5,40 +5,41 @@ after_success:
 - npm run coveralls
 before_install:
 - openssl aes-256-cbc -K $encrypted_8ef018dbaa66_key -iv $encrypted_8ef018dbaa66_iv
-  -in .env.enc -out .env -d
-before_deploy: # 배포하기전 하는 작업들
-  - rm -rf node_modules # travis가 설치한 node_moduels를 삭제
-  - zip -r paldalvalley-server . # paldalvalley-server 라는 이름으로 zip 파일 생성
-  - mkdir -p deploy # deploy 라는 디렉터리를 만듬
-  - mv paldalvalley-server.zip deploy/paldalvalley-server.zip # deploy 디렉터리로 node-koa-server.zip 파일을 이동
-deploy: # 배포
-  - provider: s3 # AWS S3를 의미
-    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
-    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
-    bucket: "paldalvalley-ci-cd" # S3에 생성한 버킷
-    region: ap-northeast-2
-    skip_cleanup: true
-    local_dir: deploy # deploy 디렉터리에 있는 파일을 s3로 업로드 하겠다는 의미
-    wait-until-deployed: true
-    on:
-      repo: paldal-valley/api #Github 주소
-      branch: master
-    dot_match: true # dot-started file 포함
-  - provider: codedeploy # AWS CodeDeploy를 의미
-    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
-    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
-    bucket: "paldalvalley-ci-cd" # AWS CodeDeploy가 다운로드 받은 버킷
-    key: paldalvalley-server.zip # 해당 버킷에 저장되어 있는 파일 이름
-    bundle_type: zip # 버킷에 저장되어 있는 파일의 확장자
-    application: paldalvalley-ci-cd-codeDeploy-service # AWS 배포 애플리케이션
-    deployment_group: paldalvalley-ci-cd-group # AWS 배포 애플리케이션에 만들어져 있는 배포 그룹
-    region: ap-northeast-2
-    wait-until-deployed: true
-    on:
-      repo: paldal-valley/api
-      branch: master
+  -in secrets.tar.enc -out secrets.tar -d
+- tar xvf secrets.tar
+before_deploy:
+- rm -rf node_modules
+- zip -r paldalvalley-server .
+- mkdir -p deploy
+- mv paldalvalley-server.zip deploy/paldalvalley-server.zip
+deploy:
+- provider: s3
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  bucket: paldalvalley-ci-cd
+  region: ap-northeast-2
+  skip_cleanup: true
+  local_dir: deploy
+  wait-until-deployed: true
+  on:
+    repo: paldal-valley/api
+    branch: master
+  dot_match: true
+- provider: codedeploy
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  bucket: paldalvalley-ci-cd
+  key: paldalvalley-server.zip
+  bundle_type: zip
+  application: paldalvalley-ci-cd-codeDeploy-service
+  deployment_group: paldalvalley-ci-cd-group
+  region: ap-northeast-2
+  wait-until-deployed: true
+  on:
+    repo: paldal-valley/api
+    branch: master
 notifications:
   email:
     recipients:
-      - qwaserdf@ajou.ac.kr
-      - makehoney3@gmail.com
+    - qwaserdf@ajou.ac.kr
+    - makehoney3@gmail.com
