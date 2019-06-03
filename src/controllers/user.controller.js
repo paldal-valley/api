@@ -1,5 +1,5 @@
 import User from '../models/users'
-import { encryption } from '@utils'
+import { encryption, timestamp } from '@utils'
 
 /*
   비즈니스로직은 DAO(model)가 아닌 controller에서
@@ -37,7 +37,38 @@ const addUser = async (req, res, next) => {
   }
 }
 
+const resetUserPassword = async (req, res, next) => {
+  try {
+    const { body: userInfo } = req
+    const { token } = req.params
+    
+    userInfo.password = encryption.createPassword(userInfo.password)
+    let resetPasswordExpires = timestamp.changeTimestampFormat(userInfo.resetPasswordExpires)
+    userInfo.resetPasswordExpires = null
+
+    const result = await User.updateOnebyToken(token, resetPasswordExpires, userInfo)
+
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const updateUser = async (req, res, next) => {
+  try{
+    const { body: userInfo } = req
+    const { email } = req.params
+    const result = await User.updateOne(email, userInfo)
+
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 export {
   add,
-  addUser
+  addUser,
+  resetUserPassword,
+  updateUser
 }

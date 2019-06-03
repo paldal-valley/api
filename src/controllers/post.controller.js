@@ -87,11 +87,15 @@ const getPostQuestionList = async (req, res, next) => {
 
 const addPostQuestion = async (req, res, next) => {
   try {
-    const { body: payload } = req
+    const { body } = req
+    const { post, postQuestion } = body
+    // const { reward: postQuestion } = postQuestion
     const { categoryId } = req.query
-    const { insertId: postId } = await Post.addOne(payload)
+    const { reward } = postQuestion
+    const { insertId: postId } = await Post.addOne(post)
 
-    const result = await PostQuestion.addOne({ postId, categoryId })
+    //채택 넣기
+    const result = await PostQuestion.addOne({ postId, categoryId, reward })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)

@@ -4,10 +4,12 @@ node_modules/
 # Coverage directory used by tools like istanbul
 coverage/
 
-# Configuration Files
+# Configuration Files And SSL keys
+keys/
 .env
 .coveralls.yml
 .travis.yml
+secrets.tar
 
 # Coverage output
 .nyc_output
