@@ -28,6 +28,7 @@ const getOne = (id = 0, options = {}) => {
       p.content,
       p.recommended,
       pq.categoryId,
+      pq.reward,
       u.id AS userId,
       u.name AS userName,
       u.majorId AS userMajorId,
