@@ -1,4 +1,5 @@
 import User from '../models/users'
+import { timestamp } from '@utils'
 
 const add = async (req, res, next) => {
   const { body: options } = req
@@ -15,11 +16,18 @@ const add = async (req, res, next) => {
 
 const send_confirm_email = async (req, res, next) => {
   const { body: options } = req
+  
+  let info = {
+    from: '"Ajou Coin 👻"<ajoucoin@ajoucoin.com>', // sender address
+    to: options.email,
+    subject: "DoAjou 이메일 인증 메일",
+    text:  'http://' + process.env.ROOT_PATH + '/reset/' + options.token + "\n\n",
+    html: "<b>"+"인증코드는 "+ options.token + " 입니다."+"</b>" // html body
+  };
 
   try {
     await User.email_dup_check(options)
-    console.log(options)
-    send_email(options.email, options.token);
+    send_email(info);
     return res.status(200).json({
       msg: "success"
     })
@@ -30,30 +38,46 @@ const send_confirm_email = async (req, res, next) => {
   }
 }
 
-async function send_email(receiver, token) {
-// Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  const nodemailer = require("nodemailer");
+const send_password_reset_email = async (req, res, next) => {
+  let { body: userInfo } = req
+  const { email } = req.params
 
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
+  let info = {
+    from: '"Ajou Coin 👻"<ajoucoin@ajoucoin.com>', // sender address
+    to: email,
+    subject: "DoAjou 비밀번호 변경 메일",
+    text:  "http://" + process.env.ROOT_PATH + "/auth/password/reset/" + userInfo.resetPasswordToken + "\n\n",
+    html: "<b>"+"http://" + process.env.ROOT_PATH + "/auth/password/reset/" + userInfo.resetPasswordToken + "\n\n"+"</b>" // html body
+  };
+
+  try {
+    await User.emailCheck(email)
+    userInfo.resetPasswordExpires = timestamp.changeTimestampFormat(userInfo.resetPasswordExpires)
+    const result = await User.updateOne(email, userInfo)
+    send_email(info);
+    return res.status(200).json(result)
+  } catch (err) {
+    return res.status(500).json({
+      msg: err
+    })
+  }
+}
+
+async function send_email(info) {
+
+  const nodemailer = require("nodemailer");
+  
+  let transporter = await nodemailer.createTransport({
     service:"Gmail",
     auth: {
-        user: 'paldalvalley@gmail.com',
-        pass: 'ajou1234!'
+        user: process.env.DOAJOU_EMAIL,
+        pass: process.env.DOAJOU_PW
     }
   });
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Ajou Coin 👻"<ajoucoin@ajoucoin.com>', // sender address
-    to: receiver,
-    subject: "아주 코인 인증 메일", // Subject line
-    text: "인증코드는 "+ token + " 입니다.", // plain text body
-    html: "<b>"+"인증코드는 "+ token + " 입니다."+"</b>" // html body
-  });
+  await transporter.sendMail(info);
 }
 
 export {
-  add, send_confirm_email
+  add, send_confirm_email, send_password_reset_email
 }

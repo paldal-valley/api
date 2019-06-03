@@ -1,9 +1,5 @@
 import con from '../connection'
-import bcrypt from 'bcryptjs'
 import auth from '../../middlewares/auth/index'
-
-//해시 알고리즘 적용 횟수
-var SALT_FACTOR = 5;
 
 // POST USER
 const add = injection => {
@@ -87,32 +83,6 @@ const email_dup_check = information => {
   })
 }
 
-
-const password_encrypt = password => {
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
-      if (err) {
-          return reject(err);
-      }
-      bcrypt.hash(password, salt, ()=>{}, function (err, hashedPassword) {
-          if (err) {
-              return reject(err);
-          }
-          return resolve(hashedPassword);
-      });
-    });
-  })
-}
-
-const password_check = (guess_password, real_password) => {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(guess_password, real_password, function (err, isMatch) {
-      if(err) return reject(err)
-      return resolve(isMatch)
-    });
-  })
-}
-
 const getOneByEmail = (email = '') => {
   return new Promise((resolve, reject) => {
     const injection = [email]
@@ -174,11 +144,75 @@ const emailDupCheck = (email = '') => {
   })
 }
 
+const emailCheck = (email = '') => {
+  return new Promise((resolve, reject) => {
+    if (!email) reject(Error('email is empty'))
+
+    const injection = [email]
+    const sql = `
+    SELECT
+      COUNT(u.email) AS existence
+    FROM
+      users u
+    WHERE
+      u.email = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      const existence = result[0].existence
+      return existence ? resolve(true) : reject(Error('email doesnt exist'))
+    })
+  })
+}
+
+const updateOne = (email = '', payload = {}) => {
+  return new Promise((resolve, reject) => {
+    if(!email) reject(Error('email is empty'))
+    const injection = [payload, email]
+    const sql = `
+    UPDATE
+      users u
+    SET
+      ?
+    WHERE
+      u.email = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
+
+const updateOnebyToken = (token = '', resetPasswordExpires = '0000-00-00 00:00:00', payload) => {
+  return new Promise((resolve, reject) => {
+    const injection = [payload, token, resetPasswordExpires]
+    const sql = `
+    UPDATE
+      users u
+    SET
+      ?
+    WHERE
+      u.resetPasswordToken = ? AND u.resetPasswordExpires >= ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+      if (!result.changedRows) return reject(Error('Matched User is NULL'))
+      return resolve(result)
+    })
+  })
+}
+
 export default {
   add,
   login,
   email_dup_check,
   addOne,
   getOneByEmail,
-  emailDupCheck
+  emailDupCheck,
+  emailCheck,
+  updateOne,
+  updateOnebyToken
 }
