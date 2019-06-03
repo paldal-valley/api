@@ -21,6 +21,7 @@ import {
   addPostAnswer,
   getPostAnswer,
   updatePostAnswer,
+  selectPostAnswer,
 } from '../controllers/post.controller'
 
 import { addOne } from '../controllers/comment.controller'
@@ -47,7 +48,8 @@ router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
 router.get('/answer/:postId',isLoggedIn,getPostAnswer)
 router.get('/answer',isLoggedIn,getPostAnswerList)
 router.post('/answer/:postId',isLoggedIn,addPostAnswer)
-router.put('/answer/:postId',isLoggedIn, hasPost,updatePostAnswer)
+router.put('/answer/:postId',isLoggedIn, hasPost, updatePostAnswer)
+router.put('/answer/select/:postId',isLoggedIn, selectPostAnswer)
 
 // reveiw
 router.get('/review', getPostReviewList)

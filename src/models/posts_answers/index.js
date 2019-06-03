@@ -59,7 +59,7 @@ const getOne = (id = 0, options = {}) => {
 
 const updateOne = (id = 0, payload = {}) => {
   return new Promise((resolve, reject) => {
-    //const injection = [payload, id]
+    const injection = [payload, id]
     const sql = `
     UPDATE
       posts_answers
@@ -68,13 +68,33 @@ const updateOne = (id = 0, payload = {}) => {
     WHERE
       postId = ?
     `
-    con.query(sql, /*injection,*/ (err, result) => {
+    con.query(sql, injection, (err, result) => {
       if (err) return reject(err)
 
       return resolve(result)
     })
   })
 }
+
+const selectOne = (id = 0, payload = {}) => {
+  return new Promise((resolve, reject) => {
+    const injection = [payload, id]
+    const sql = `
+    UPDATE
+      posts_answers
+    SET
+      ?
+    WHERE
+      postId = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
+
 
 const getList = (options = {}) => {
   return new Promise((resolve, reject) => {
@@ -134,5 +154,6 @@ export default {
   addOne,
   getOne,
   getList,
-  updateOne
+  updateOne,
+  selectOne
 }
