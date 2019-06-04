@@ -21,7 +21,7 @@ const send_confirm_email = async (req, res, next) => {
     from: '"Ajou Coin 👻"<ajoucoin@ajoucoin.com>', // sender address
     to: options.email,
     subject: "DoAjou 이메일 인증 메일",
-    text:  'http://' + process.env.ROOT_PATH + '/reset/' + options.token + "\n\n",
+    text:  '인증코드는 ' + options.token + '입니다.',
     html: "<b>"+"인증코드는 "+ options.token + " 입니다."+"</b>" // html body
   };
 
@@ -46,8 +46,8 @@ const send_password_reset_email = async (req, res, next) => {
     from: '"Ajou Coin 👻"<ajoucoin@ajoucoin.com>', // sender address
     to: email,
     subject: "DoAjou 비밀번호 변경 메일",
-    text:  "http://" + process.env.ROOT_PATH + "/auth/password/reset/" + userInfo.resetPasswordToken + "\n\n",
-    html: "<b>"+"http://" + process.env.ROOT_PATH + "/auth/password/reset/" + userInfo.resetPasswordToken + "\n\n"+"</b>" // html body
+    text:  "https://" + process.env.ROOT_PATH + "/auth/password/reset/" + userInfo.resetPasswordToken + "\n\n",
+    html: "<b>"+"https://" + process.env.ROOT_PATH + "/auth/password/reset/" + userInfo.resetPasswordToken + "\n\n"+"</b>" // html body
   };
 
   try {
