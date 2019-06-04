@@ -4,8 +4,7 @@ node_modules/
 # Coverage directory used by tools like istanbul
 coverage/
 
-# Configuration Files And SSL keys
-keys/
+# Configuration Files
 .env
 .coveralls.yml
 .travis.yml
