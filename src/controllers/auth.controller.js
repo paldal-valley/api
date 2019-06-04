@@ -33,7 +33,27 @@ const tryLogin = async (req, res, next) => {
   }
 }
 
+const authFetch = async (req, res, next) => {
+  try {
+    const user = await User.getOneByEmail(req.me.email)
+    
+    delete user.password
+
+    const payload = { ...user }
+    const token = jwt.createToken(payload)
+
+    return res.status(200).json({
+      success: true,
+      user: payload,
+      token
+    })
+  } catch (err){
+    return next(err)
+  }
+}
+
 export {
   authCheck,
-  tryLogin
+  tryLogin,
+  authFetch
 }
