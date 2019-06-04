@@ -32,7 +32,7 @@ deploy:
   key: paldalvalley-server.zip
   bundle_type: zip
   application: paldalvalley-ci-cd-codeDeploy-service
-  deployment_group: paldalvalley-ci-cd-group
+  deployment_group: paldalvalley-api-deploy
   region: ap-northeast-2
   wait-until-deployed: true
   on:

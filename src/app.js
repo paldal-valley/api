@@ -1,8 +1,6 @@
 import express from 'express'
-import https from 'https'
 import morgan from 'morgan'
 import cors from 'cors'
-import fs from 'fs'
 import 'dotenv/config'
 import './utils/module-alias'
 
@@ -22,14 +20,7 @@ app.use(me)
 app.use('/', api)
 app.use(errorHandler)
 
-const credentials = {
-  key: fs.readFileSync(process.env.SSL_PUBLIC_KEY_PATH),
-  cert: fs.readFileSync(process.env.SSL_PRIVATE_KEY_PATH),
-  passphrase: process.env.SSL_PASSPHRASE
-}
-
-const httpsServer = https.createServer(credentials, app)
-const server = httpsServer.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })
 
