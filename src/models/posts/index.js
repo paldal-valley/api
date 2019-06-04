@@ -94,5 +94,5 @@ export default {
   getOne,
   getList,
   deleteOne,
-  updateOne
+  updateOne,
 }

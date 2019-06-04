@@ -163,7 +163,7 @@ const updatePostAnswer = async (req, res, next) => {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
     const { body: payload } = req
     const { postId } = req.params
-    
+    console.log(payload)
     await Post.updateOne(postId, payload)
 
     return res.status(200).json({ success: true })
@@ -172,7 +172,22 @@ const updatePostAnswer = async (req, res, next) => {
   }
 }
 
+const selectPostAnswer = async (req, res, next) => {
+  try {
+    // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
+    const { body: payload } = req
+    const { isSelected } = req.query
+    console.log(req.query)
+    const { postId } = req.params
+    //await Post.updateOne(postId, payload)
 
+    await PostAnswer.selectOne(postId, { isSelected })
+
+    return res.status(200).json({ success: true })
+  } catch (err) {
+    return next(err)
+  }
+}
 
 /* ------------ Plaza ------------- */
 
@@ -313,4 +328,5 @@ export {
   addPostAnswer,
   getPostAnswer,
   updatePostAnswer,
+  selectPostAnswer,
 }
