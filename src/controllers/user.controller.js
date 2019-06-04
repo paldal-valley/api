@@ -57,10 +57,21 @@ const resetUserPassword = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try{
     const { body: userInfo } = req
-    const { email } = req.params
-    const result = await User.updateOne(email, userInfo)
+    const { userId } = req.params
 
-    return res.status(200).json(result)
+    const user = await User.getOneByEmail(userInfo.email)
+    const isValidUser = await encryption.comparePassword(userInfo.current_password, user.password)
+    delete userInfo.current_password
+
+    if(isValidUser){
+      userInfo.password? userInfo.password = encryption.createPassword(userInfo.password) : delete userInfo.password
+      
+      const payload = { ...userInfo }
+      const result = await User.updateOne(userId, payload)
+      return res.status(200).json(result)
+    } else {
+      return next(Error('userInfo is wrong'))
+    }
   } catch (err) {
     return next(err)
   }

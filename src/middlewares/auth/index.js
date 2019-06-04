@@ -18,7 +18,16 @@ const emailDupCheck = async (req, res, next) => {
   }
 }
 
+const isMyself = (req, res, next) => {
+  if (req.me.id == req.params.userId) {
+    next()
+  } else {
+    next(Error('User is not himself'))
+  }
+}
+
 export {
   isLoggedIn,
-  emailDupCheck
+  emailDupCheck,
+  isMyself
 }
