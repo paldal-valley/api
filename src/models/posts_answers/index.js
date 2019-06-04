@@ -23,22 +23,21 @@ const getOne = (id = 0, options = {}) => {
     const injection = [id]
     const sql = `
     SELECT
-      p.id,
+      pa.id,
       p.title,
       p.content,
       p.recommended,
-      pq.categoryId,
       u.id AS userId,
       u.name AS userName,
       u.majorId AS userMajorId,
       u.email AS userEmail,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d / %h:%i %p") AS createdDate
     FROM
-      posts_answers pq
+      posts_answers pa
     JOIN
       posts p
     ON
-      pq.postId = p.id
+      pa.postId = p.id
     JOIN
       users u
     ON
@@ -63,7 +62,7 @@ const updateOne = (id = 0, payload = {}) => {
     const injection = [payload, id]
     const sql = `
     UPDATE
-      posts_questions
+      posts_answers
     SET
       ?
     WHERE
@@ -76,6 +75,26 @@ const updateOne = (id = 0, payload = {}) => {
     })
   })
 }
+
+const selectOne = (id = 0, payload = {}) => {
+  return new Promise((resolve, reject) => {
+    const injection = [payload, id]
+    const sql = `
+    UPDATE
+      posts_answers
+    SET
+      ?
+    WHERE
+      postId = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
+
 
 const getList = (options = {}) => {
   return new Promise((resolve, reject) => {
@@ -135,5 +154,6 @@ export default {
   addOne,
   getOne,
   getList,
-  updateOne
+  updateOne,
+  selectOne
 }
