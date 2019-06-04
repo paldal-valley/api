@@ -92,7 +92,8 @@ const getOneByEmail = (email = '') => {
       u.email,
       u.name,
       u.password,
-      u.walletAddress
+      u.walletAddress,
+      u.majorId
     FROM
       users u
     WHERE
@@ -166,17 +167,17 @@ const emailCheck = (email = '') => {
   })
 }
 
-const updateOne = (email = '', payload = {}) => {
+const updateOne = (userId = '', payload = {}) => {
   return new Promise((resolve, reject) => {
-    if(!email) reject(Error('email is empty'))
-    const injection = [payload, email]
+    if(!userId) reject(Error('email is empty'))
+    const injection = [payload, userId]
     const sql = `
     UPDATE
       users u
     SET
       ?
     WHERE
-      u.email = ?
+      u.id = ?
     `
     con.query(sql, injection, (err, result) => {
       if (err) return reject(err)

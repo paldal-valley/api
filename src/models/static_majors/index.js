@@ -1,12 +1,13 @@
-import con from '../connection'
+import con from '@db'
 
-// GET tests
-const get = () => {
+const getList = () => {
   return new Promise((resolve, reject) => {
     const sql = `
-    SELECT * FROM static_majors;
+    SELECT
+      sm.*
+    FROM
+      static_majors sm
     `
-
     con.query(sql, (err, result) => {
       if (err) return reject(err)
 
@@ -16,5 +17,5 @@ const get = () => {
 }
 
 export default {
-  get
+  getList
 }

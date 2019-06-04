@@ -87,11 +87,15 @@ const getPostQuestionList = async (req, res, next) => {
 
 const addPostQuestion = async (req, res, next) => {
   try {
-    const { body: payload } = req
+    const { body } = req
+    const { post, postQuestion } = body
+    // const { reward: postQuestion } = postQuestion
     const { categoryId } = req.query
-    const { insertId: postId } = await Post.addOne(payload)
+    const { reward } = postQuestion
+    const { insertId: postId } = await Post.addOne(post)
 
-    const result = await PostQuestion.addOne({ postId, categoryId })
+    //채택 넣기
+    const result = await PostQuestion.addOne({ postId, categoryId, reward })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -117,20 +121,21 @@ const updatePostQuestion = async (req, res, next) => {
 
 /* ------------ Answer ------------- */
 
-// const getPostAnswer = async (req, res, next) => {
-//   try {
-//     const { postId = 0 } = req.params
-//     const { query: options } = req.query
-//     const result = await PostQuestion.getOne(postId, options)
-//     return res.status(200).json(result)
-//   } catch (err) {
-//     return next(err)
-//   }
-// }
+const getPostAnswer = async (req, res, next) => {
+  try {
+    const { postId = 0 } = req.params
+    const { query: options } = req.query
+    const result = await PostAnswer.getOne(postId, options)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
 
 const getPostAnswerList = async (req, res, next) => {
   try {
     const { query: options } = req
+    //console.log(options)
     const result = await PostAnswer.getList(options)
     return res.status(200).json(result)
   } catch (err) {
@@ -151,23 +156,36 @@ const addPostAnswer = async (req, res, next) => {
   }
 }
 
-// const updatePostAnswer = async (req, res, next) => {
-//   try {
-//     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
-//     const { body: payload } = req
-//     const { categoryId } = req.query
-//     const { postId } = req.params
-//     await Post.updateOne(postId, payload)
+const updatePostAnswer = async (req, res, next) => {
+  try {
+    // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
+    const { body: payload } = req
+    const { postId } = req.params
+    console.log(payload)
+    await Post.updateOne(postId, payload)
 
-//     await PostAnswer.updateOne(postId, { categoryId })
+    return res.status(200).json({ success: true })
+  } catch (err) {
+    return next(err)
+  }
+}
 
-//     return res.status(200).json({ success: true })
-//   } catch (err) {
-//     return next(err)
-//   }
-// }
+const selectPostAnswer = async (req, res, next) => {
+  try {
+    // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
+    const { body: payload } = req
+    const { isSelected } = req.query
+    console.log(req.query)
+    const { postId } = req.params
+    //await Post.updateOne(postId, payload)
 
+    await PostAnswer.selectOne(postId, { isSelected })
 
+    return res.status(200).json({ success: true })
+  } catch (err) {
+    return next(err)
+  }
+}
 
 /* ------------ Plaza ------------- */
 
@@ -306,4 +324,7 @@ export {
   updatePostReview,
   getPostAnswerList,
   addPostAnswer,
+  getPostAnswer,
+  updatePostAnswer,
+  selectPostAnswer,
 }
