@@ -35,6 +35,26 @@ const getOne = (id = 0) => {
   })
 }
 
+
+const getWriteUser = (id = 0) => {
+  return new Promise((resolve, reject) => {
+    const injection = [id]
+    const sql = `
+    SELECT 
+      p.userId
+    FROM 
+      posts as p
+    WHERE
+      p.id = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+      return resolve(result[0])
+    })
+  })
+}
+
+
 // GET tests
 const getList = () => {
   return new Promise((resolve, reject) => {
@@ -95,4 +115,5 @@ export default {
   getList,
   deleteOne,
   updateOne,
+  getWriteUser
 }

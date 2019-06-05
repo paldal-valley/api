@@ -96,6 +96,28 @@ const selectOne = (id = 0, payload = {}) => {
 }
 
 
+
+const getSelected = ( id ) => {
+  return new Promise((resolve, reject) => {
+    const injection = [id]
+    const sql = `
+    SELECT
+      pa.id
+    FROM
+      posts_answers as pa
+    WHERE
+      pa.isSelected = 1 && pa.postId_Q = ?
+
+    `
+    con.query(sql, injection ,(err, result) => {
+      if (err) return reject(err)
+      return resolve(result)
+    })
+  })
+}
+
+
+
 const getList = (options = {}) => {
   return new Promise((resolve, reject) => {
     const { limit = 5, postId_Q = 0 } = options
@@ -118,6 +140,7 @@ const getList = (options = {}) => {
       p.content,
       p.view,
       p.recommended,
+      pa.isSelected,
       u.id AS userId,
       u.name AS userName,
       u.majorId AS userMajorId,
@@ -155,5 +178,6 @@ export default {
   getOne,
   getList,
   updateOne,
-  selectOne
+  selectOne,
+  getSelected
 }
