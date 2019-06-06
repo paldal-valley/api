@@ -1,6 +1,9 @@
 language: node_js
 node_js:
 - stable
+script:
+- npm test
+- npm run build
 after_success:
 - npm run coveralls
 before_install:
@@ -32,7 +35,7 @@ deploy:
   key: paldalvalley-server.zip
   bundle_type: zip
   application: paldalvalley-ci-cd-codeDeploy-service
-  deployment_group: paldalvalley-ci-cd-group
+  deployment_group: paldalvalley-api-deploy
   region: ap-northeast-2
   wait-until-deployed: true
   on:
