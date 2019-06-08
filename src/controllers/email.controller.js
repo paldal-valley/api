@@ -52,8 +52,9 @@ const send_password_reset_email = async (req, res, next) => {
 
   try {
     await User.emailCheck(email)
+    const user = await User.getOneByEmail(email)
     userInfo.resetPasswordExpires = timestamp.changeTimestampFormat(userInfo.resetPasswordExpires)
-    const result = await User.updateOne(email, userInfo)
+    const result = await User.updateOne(user.id, userInfo)
     send_email(info);
     return res.status(200).json(result)
   } catch (err) {

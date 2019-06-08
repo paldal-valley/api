@@ -57,6 +57,18 @@ const deletePost = async (req, res, next) => {
   }
 }
 
+const getWriteUser = async (req, res, next) =>{
+  try{
+    //const { body: payload } = req
+    const { postId } = req.params
+    const result = await Post.getWriteUser(postId)
+    return res.status(200).json(result)
+  }
+  catch(err){
+    return next(err)
+  }
+}
+
 /* ------------ Question ------------- */
 
 const getPostQuestion = async (req, res, next) => {
@@ -105,12 +117,14 @@ const addPostQuestion = async (req, res, next) => {
 const updatePostQuestion = async (req, res, next) => {
   try {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
-    const { body: payload } = req
+    const { body } = req
+    const { post, postQuestion } = body
     const { categoryId } = req.query
+    const { reward } = postQuestion
     const { postId } = req.params
-    await Post.updateOne(postId, payload)
+    await Post.updateOne(postId, post)
 
-    await PostQuestion.updateOne(postId, { categoryId })
+    await PostQuestion.updateOne(postId, { categoryId, reward })
 
     return res.status(200).json({ success: true })
   } catch (err) {
@@ -120,6 +134,8 @@ const updatePostQuestion = async (req, res, next) => {
 
 
 /* ------------ Answer ------------- */
+
+
 
 const getPostAnswer = async (req, res, next) => {
   try {
@@ -142,6 +158,8 @@ const getPostAnswerList = async (req, res, next) => {
     return next(err)
   }
 }
+
+
 
 const addPostAnswer = async (req, res, next) => {
   try {
@@ -170,6 +188,9 @@ const updatePostAnswer = async (req, res, next) => {
   }
 }
 
+
+
+
 const selectPostAnswer = async (req, res, next) => {
   try {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
@@ -182,6 +203,17 @@ const selectPostAnswer = async (req, res, next) => {
     await PostAnswer.selectOne(postId, { isSelected })
 
     return res.status(200).json({ success: true })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+
+const checkSelected = async (req, res, next) => {
+  try {
+    const { postId_Q } = req.params
+    const result = await PostAnswer.getSelected(postId_Q)
+    return res.status(200).json(result)
   } catch (err) {
     return next(err)
   }
@@ -307,6 +339,7 @@ const updatePostReview = async (req, res, next) => {
 export {
   getPost,
   getPostList,
+  getWriteUser,
   addPost,
   updatePost,
   deletePost,
@@ -327,4 +360,5 @@ export {
   getPostAnswer,
   updatePostAnswer,
   selectPostAnswer,
+  checkSelected
 }
