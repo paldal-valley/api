@@ -126,7 +126,7 @@ const getList = (options = {}) => {
         SELECT
             refId AS postId
         FROM
-            sandbox.comments
+            comments
         WHERE
             refType = 2 AND
             isDeleted <> 1

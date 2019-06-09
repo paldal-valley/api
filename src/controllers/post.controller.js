@@ -4,6 +4,7 @@ import PostQuestion from '@dao/posts_questions'
 import PostAnswer from '@dao/posts_answers'
 import PostReview from '@dao/posts_review'
 import Comment from '@dao/comments'
+import Like from '@dao/likes'
 
 const addPost = async (req, res, next) => {
   try {
@@ -81,6 +82,24 @@ const updatePostView = async (req, res, next) => {
   }
 }
 
+const likePost = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { postId } = req.params
+    
+    const likeId = await Like.check(postId, payload.userId)
+    if (likeId) {
+      Like.destroy(likeId)
+      res.status(200).json({ success: true, msg: "delete" })
+    } else {
+      payload.refId = postId
+      Like.addOne(payload)
+      res.status(200).json({ success: true, msg: "create" })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
 
 /* ------------ Question ------------- */
 
@@ -193,7 +212,6 @@ const updatePostAnswer = async (req, res, next) => {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
     const { body: payload } = req
     const { postId } = req.params
-    console.log(payload)
     await Post.updateOne(postId, payload)
 
     return res.status(200).json({ success: true })
@@ -210,7 +228,7 @@ const selectPostAnswer = async (req, res, next) => {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
     const { body: payload } = req
     const { isSelected } = req.query
-    console.log(req.query)
+    // console.log(req.query)
     const { postId } = req.params
     //await Post.updateOne(postId, payload)
 
@@ -313,10 +331,12 @@ const getPostReview = async (req, res, next) => {
     const { query: options } = req.query
     const comments = await Comment.getListByPostId(postId)
     const post = await PostReview.getOne(postId, options)
-
+    const likes = await Like.getList(postId)
+    // console.log(likes)
     return res.status(200).json({
       ...post,
-      comments
+      comments,
+      likes
     })
   } catch (err) {
     return next(err)
@@ -327,6 +347,7 @@ const getPostReviewList = async (req, res, next) => {
   try {
     const { query: options } = req
     const result = await PostReview.getList(options)
+    // console.log(result)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -375,5 +396,6 @@ export {
   updatePostAnswer,
   selectPostAnswer,
   checkSelected,
-  updatePostView
+  updatePostView,
+  likePost
 }

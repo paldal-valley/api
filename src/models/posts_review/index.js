@@ -29,6 +29,7 @@ const getList = (options = {}) => {
       u.majorId AS userMajorId,
       u.email AS userEmail,
       COUNT(covering.postId) AS totalComment,
+      COUNT(DISTINCT likeCovering.id) AS totalLike,
       DATE_FORMAT(p.createdDate, "%Y. %m. %d / %h:%i %p") AS createdDate
     FROM
       posts_reviews pr
@@ -40,22 +41,34 @@ const getList = (options = {}) => {
       users u
     ON
       u.id = p.userId
-      
+
+  
     LEFT JOIN
       (
         SELECT
             refId AS postId
         FROM
-            sandbox.comments
+            comments
         WHERE
             refType = 2 AND
             isDeleted <> 1
       ) AS covering
     ON
       covering.postId = p.id
-      
+
+    LEFT JOIN
+      (
+        SELECT
+            id,
+            refId AS postId
+        FROM
+            likes
+      ) AS likeCovering
+    ON
+       likeCovering.postId = p.id
+
     ${should()}
-    
+
     GROUP by p.id
     ORDER BY p.createdDate DESC
     

@@ -25,6 +25,7 @@ import {
   checkSelected,
   getWriteUser,
   updatePostView,
+  likePost
 } from '../controllers/post.controller'
 
 import { addOne } from '../controllers/comment.controller'
@@ -68,6 +69,7 @@ router.get('/', getPostList)
 router.get('/:postId', isLoggedIn, getPost)
 router.get('/getUser/:postId', isLoggedIn, getWriteUser)
 router.post('/', isLoggedIn, addPost)
+router.post('/like/:postId', likePost)
 router.delete('/:postId', isLoggedIn, hasPost, deletePost)
 router.put('/:postId', isLoggedIn, hasPost, updatePost)
 router.put('/view/:postId', isLoggedIn, updatePostView)
