@@ -76,6 +76,7 @@ const getOne = (id = 0, options = {}) => {
       p.id,
       p.title,
       p.content,
+      p.view,
       p.recommended,
       pp.categoryId,
       u.id AS userId,

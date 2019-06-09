@@ -69,6 +69,20 @@ const getWriteUser = async (req, res, next) =>{
   }
 }
 
+const updatePostView = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { postId } = req.params
+    console.log(req.params)
+    const result = await Post.updateOne(postId, payload)
+
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+
 /* ------------ Question ------------- */
 
 const getPostQuestion = async (req, res, next) => {
@@ -131,6 +145,7 @@ const updatePostQuestion = async (req, res, next) => {
     return next(err)
   }
 }
+
 
 
 /* ------------ Answer ------------- */
@@ -360,5 +375,6 @@ export {
   getPostAnswer,
   updatePostAnswer,
   selectPostAnswer,
-  checkSelected
+  checkSelected,
+  updatePostView
 }

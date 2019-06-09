@@ -27,6 +27,7 @@ const getOne = (id = 0, options = {}) => {
       p.title,
       p.content,
       p.recommended,
+      p.view,
       pq.reward,
       pq.categoryId,
       pq.reward,
