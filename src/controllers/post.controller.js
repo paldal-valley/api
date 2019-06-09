@@ -73,7 +73,6 @@ const updatePostView = async (req, res, next) => {
   try {
     const { body: payload } = req
     const { postId } = req.params
-    console.log(req.params)
     const result = await Post.updateOne(postId, payload)
 
     return res.status(200).json(result)
