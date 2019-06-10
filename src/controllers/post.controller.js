@@ -5,6 +5,7 @@ import PostAnswer from '@dao/posts_answers'
 import PostReview from '@dao/posts_review'
 import User from '@dao/users'
 import Comment from '@dao/comments'
+import Like from '@dao/likes'
 import { getContract, walletAddress } from '../utils'
 
 const addPost = async (req, res, next) => {
@@ -82,6 +83,37 @@ const getWriteUser = async (req, res, next) =>{
   }
 }
 
+const updatePostView = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { postId } = req.params
+    const result = await Post.updateOne(postId, payload)
+
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
+const likePost = async (req, res, next) => {
+  try {
+    const { body: payload } = req
+    const { postId } = req.params
+    
+    const likeId = await Like.check(postId, payload.userId)
+    if (likeId) {
+      Like.destroy(likeId)
+      res.status(200).json({ success: true, msg: "delete" })
+    } else {
+      payload.refId = postId
+      Like.addOne(payload)
+      res.status(200).json({ success: true, msg: "create" })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
 /* ------------ Question ------------- */
 
 const getPostQuestion = async (req, res, next) => {
@@ -144,6 +176,7 @@ const updatePostQuestion = async (req, res, next) => {
     return next(err)
   }
 }
+
 
 
 /* ------------ Answer ------------- */
@@ -317,10 +350,12 @@ const getPostReview = async (req, res, next) => {
     const { query: options } = req.query
     const comments = await Comment.getListByPostId(postId)
     const post = await PostReview.getOne(postId, options)
-
+    const likes = await Like.getList(postId)
+    // console.log(likes)
     return res.status(200).json({
       ...post,
-      comments
+      comments,
+      likes
     })
   } catch (err) {
     return next(err)
@@ -331,6 +366,7 @@ const getPostReviewList = async (req, res, next) => {
   try {
     const { query: options } = req
     const result = await PostReview.getList(options)
+    // console.log(result)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -378,5 +414,7 @@ export {
   getPostAnswer,
   updatePostAnswer,
   selectPostAnswer,
-  checkSelected
+  checkSelected,
+  updatePostView,
+  likePost
 }

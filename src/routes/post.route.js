@@ -24,6 +24,8 @@ import {
   selectPostAnswer,
   checkSelected,
   getWriteUser,
+  updatePostView,
+  likePost
 } from '../controllers/post.controller'
 
 import { addOne } from '../controllers/comment.controller'
@@ -45,6 +47,7 @@ router.get('/question', getPostQuestionList)
 router.get('/question/:postId', isLoggedIn, getPostQuestion)
 router.post('/question', isLoggedIn, addPostQuestion)
 router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
+router.put('/question/:postId', isLoggedIn, updatePostQuestion)
 
 // Answer
 router.get('/answer/:postId',isLoggedIn,getPostAnswer)
@@ -66,8 +69,10 @@ router.get('/', getPostList)
 router.get('/:postId', isLoggedIn, getPost)
 router.get('/getUser/:postId', isLoggedIn, getWriteUser)
 router.post('/', isLoggedIn, addPost)
+router.post('/like/:postId', likePost)
 router.delete('/:postId', isLoggedIn, hasPost, deletePost)
 router.put('/:postId', isLoggedIn, hasPost, updatePost)
+router.put('/view/:postId', isLoggedIn, updatePostView)
 
 
 // comments -> get and add 제외하고 update, delete 할 떄는 comment 라우터에서 처리
