@@ -10,6 +10,7 @@ import {
   addPostPlaza,
   updatePostPlaza,
   getPostQuestionList,
+  getPostUnselectedQuestionList,
   getPostQuestion,
   addPostQuestion,
   updatePostQuestion,
@@ -44,6 +45,7 @@ router.post('/plaza', isLoggedIn, addPostPlaza)
 router.put('/plaza/:postId', isLoggedIn, hasPost, updatePostPlaza)
 
 // Question
+router.get('/question/unselected', getPostUnselectedQuestionList)
 router.get('/question', getPostQuestionList)
 router.get('/question/:postId', isLoggedIn, getPostQuestion)
 router.get('/question/getSelected/:postId_Q', isLoggedIn, getPostSelected)

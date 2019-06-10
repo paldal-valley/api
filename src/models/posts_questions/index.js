@@ -209,7 +209,60 @@ const getList = (options = {}) => {
   })
 }
 
+const getUnselectedList = (options = {}) => {
+  return new Promise((resolve, reject) => {
+    //option get으로 하면 쿼리로 들어감. 옵션에 is Selected = 0 추가해주고
+    const { limit = 10, categoryId = 0, isSelected = null } = options
+    const should = () => {
+      const array = ['WHERE p.isDeleted = 0', 'AND p.isPending = 0']
+      if (categoryId) array.push('AND pq.categoryId = ?')
+      if (isSelected != null) array.push('AND pa.isSelected=?')
+        //if(isSelected) arrya.push('AND pa.isSelected=?')
+      return array.join(' ')
+    }
 
+    const injection = []
+
+    if (categoryId) injection.push(Number(categoryId))
+      //여기다가 isSelected push
+    if (isSelected) injection.push(Number(isSelected))
+    injection.push(Number(limit))
+
+    //post answer 조인하고
+    const sql = `
+    SELECT
+      p.id,
+      p.title,
+      p.content,
+      pq.reward,
+      pq.categoryId
+    FROM
+      posts_questions pq
+    JOIN
+      posts p
+    ON
+      p.id = pq.postId
+    LEFT JOIN
+      posts_answers pa
+    ON
+      pq.id = pa.postId_Q AND
+      pa.isSelected <> 1
+        
+      
+    ${should()}
+    
+    GROUP by p.id
+    ORDER BY p.createdDate DESC
+    
+    LIMIT ?
+    `
+    con.query(sql, injection ,(err, result) => {
+      if (err) return reject(err)
+
+      return resolve(result)
+    })
+  })
+}
 
 
 export default {
@@ -217,6 +270,7 @@ export default {
   getOne,
   getOneByPostQuestion,
   getList,
+  getUnselectedList,
   updateOne,
   getPostSelected
 }

@@ -145,6 +145,17 @@ const getPostQuestionList = async (req, res, next) => {
   }
 }
 
+const getPostUnselectedQuestionList = async (req, res, next) => {
+  try {
+    const { query: options } = req
+    const result = await PostQuestion.getUnselectedList(options)
+    console.log(result)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 const addPostQuestion = async (req, res, next) => {
   try {
     const { body } = req
@@ -415,6 +426,7 @@ export {
   updatePostPlaza,
   getPostQuestion,
   getPostQuestionList,
+  getPostUnselectedQuestionList,
   addPostQuestion,
   updatePostQuestion,
   getPostReview,
