@@ -1,4 +1,5 @@
 import User from '../models/users'
+import { getContract, walletAddress } from '../utils'
 import { encryption, timestamp } from '@utils'
 
 /*
@@ -21,6 +22,7 @@ const add = async (req, res, next) => {
 
 const addUser = async (req, res, next) => {
   try {
+    const doajouContract = await getContract()
     const { body: userInfo } = req
     if (!userInfo.email) return next(Error('email is required'))
     if (!userInfo.password) return next(Error('password is required'))
@@ -31,6 +33,11 @@ const addUser = async (req, res, next) => {
 
     const payload = { ...userInfo }
     const result = await User.addOne(payload)
+    const { walletAddress: userWallet } = await User.getOne(result.insertId)
+
+    await doajouContract.methods.offerWelcomeToken(userWallet).send({
+      from: walletAddress.owner
+    })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -41,7 +48,7 @@ const resetUserPassword = async (req, res, next) => {
   try {
     const { body: userInfo } = req
     const { token } = req.params
-    
+
     userInfo.password = encryption.createPassword(userInfo.password)
     let resetPasswordExpires = timestamp.changeTimestampFormat(userInfo.resetPasswordExpires)
     userInfo.resetPasswordExpires = null
@@ -65,7 +72,7 @@ const updateUser = async (req, res, next) => {
 
     if(isValidUser){
       userInfo.password? userInfo.password = encryption.createPassword(userInfo.password) : delete userInfo.password
-      
+
       const payload = { ...userInfo }
       const result = await User.updateOne(userId, payload)
       return res.status(200).json(result)
