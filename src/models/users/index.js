@@ -15,7 +15,7 @@ const add = injection => {
     } catch (err) {
       reject(err)
     }
-    
+
     con.query(sql, injection, (err, result) => {
       if (err){
         if ('code' in err) return resolve(err.code)
@@ -79,6 +79,24 @@ const email_dup_check = information => {
       } catch (err) {
         return reject(err)
       }
+    })
+  })
+}
+
+const getOne = (id = 0) => {
+  return new Promise((resolve, reject) => {
+    const injection = [id]
+    const sql = `
+    SELECT 
+      * 
+    FROM
+      users
+    WHERE
+      id = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+      return resolve(result[0])
     })
   })
 }
@@ -211,6 +229,7 @@ export default {
   login,
   email_dup_check,
   addOne,
+  getOne,
   getOneByEmail,
   emailDupCheck,
   emailCheck,
