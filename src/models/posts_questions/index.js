@@ -17,6 +17,26 @@ const addOne = (payload = {}) => {
   })
 }
 
+const getOneByPostQuestion = (id = 0) => {
+  return new Promise((resolve, reject) => {
+    const injection = [id]
+    const sql = `
+    SELECT
+      *
+    FROM
+      posts_questions pq
+    WHERE
+      pq.id = ?
+    `
+    con.query(sql, injection, (err, result) => {
+      if (err) return reject(err)
+
+      if (result[0]) return resolve(result[0])
+      return resolve({})
+    })
+  })
+}
+
 // GET tests
 const getOne = (id = 0, options = {}) => {
   return new Promise((resolve, reject) => {
@@ -154,6 +174,7 @@ const getList = (options = {}) => {
 export default {
   addOne,
   getOne,
+  getOneByPostQuestion,
   getList,
   updateOne
 }
