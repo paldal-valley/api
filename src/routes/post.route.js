@@ -38,7 +38,7 @@ const router = Router()
 
 // plaza
 router.get('/plaza', getPostPlazaList)
-router.get('/plaza/:postId', isLoggedIn, getPostPlaza)
+router.get('/plaza/:postId', getPostPlaza)
 router.post('/plaza', isLoggedIn, addPostPlaza)
 router.put('/plaza/:postId', isLoggedIn, hasPost, updatePostPlaza)
 
