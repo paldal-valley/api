@@ -158,6 +158,7 @@ const getList = (options = {}) => {
       p.recommended,
       pq.reward,
       pq.categoryId,
+      pa.isSelected AS selected,
       u.id AS userId,
       u.name AS userName,
       u.majorId AS userMajorId,
@@ -170,6 +171,10 @@ const getList = (options = {}) => {
       posts p
     ON
       p.id = pq.postId
+    LEFT JOIN
+      posts_answers pa
+    ON
+      pq.id = pa.postId_Q
     JOIN
       users u
     ON
