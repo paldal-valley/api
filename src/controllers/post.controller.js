@@ -3,7 +3,9 @@ import PostPlaza from '@dao/posts_plazas'
 import PostQuestion from '@dao/posts_questions'
 import PostAnswer from '@dao/posts_answers'
 import PostReview from '@dao/posts_review'
+import User from '@dao/users'
 import Comment from '@dao/comments'
+import { getContract, walletAddress } from '../utils'
 
 const addPost = async (req, res, next) => {
   try {
@@ -50,6 +52,17 @@ const updatePost = async (req, res, next) => {
 const deletePost = async (req, res, next) => {
   try {
     const { postId } = req.params
+
+    // 만약 질문 게시글을 삭제한다면 수수료 발생
+
+    const postQuestion = await PostQuestion.getOne(postId)
+    console.log(postQuestion)
+    if (Object.keys(postQuestion).length) {
+      const doajouContract = await getContract()
+      doajouContract.methods.removeQuestion(postQuestion.id).send({
+        from: walletAddress.manager
+      })
+    }
     const result = await Post.deleteOne(postId)
     return res.status(200).json(result)
   } catch (err) {
@@ -151,7 +164,6 @@ const getPostAnswer = async (req, res, next) => {
 const getPostAnswerList = async (req, res, next) => {
   try {
     const { query: options } = req
-    //console.log(options)
     const result = await PostAnswer.getList(options)
     return res.status(200).json(result)
   } catch (err) {
@@ -179,7 +191,6 @@ const updatePostAnswer = async (req, res, next) => {
     // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
     const { body: payload } = req
     const { postId } = req.params
-    console.log(payload)
     await Post.updateOne(postId, payload)
 
     return res.status(200).json({ success: true })
@@ -188,19 +199,26 @@ const updatePostAnswer = async (req, res, next) => {
   }
 }
 
-
-
-
 const selectPostAnswer = async (req, res, next) => {
   try {
-    // TODO: 나중에 카테고리 변경 등 세부테이블 변경도 같이 일어나도록 수정하기
-    const { body: payload } = req
+    const { postId_Q } = req.body
     const { isSelected } = req.query
-    console.log(req.query)
     const { postId } = req.params
-    //await Post.updateOne(postId, payload)
 
     await PostAnswer.selectOne(postId, { isSelected })
+
+    const { reward } = await PostQuestion.getOneByPostQuestion(postId_Q)
+
+    // reward가 없는 질문에서는 수행하지 않는다.
+    if (reward) {
+      const doajouContract = await getContract()
+      const { userId } = await Post.getOne(postId)
+      const { walletAddress: answerer } = await User.getOne(userId)
+
+      await doajouContract.methods.answerSelected(postId_Q, answerer).send({
+        from: walletAddress.manager
+      })
+    }
 
     return res.status(200).json({ success: true })
   } catch (err) {
