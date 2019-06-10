@@ -31,6 +31,11 @@ const addUser = async (req, res, next) => {
 
     const payload = { ...userInfo }
     const result = await User.addOne(payload)
+    const { walletAddress: userWallet } = await User.getOne(result.insertId)
+
+    // await doajouContract.methods.offerWelcomeToken(userWallet).send({
+    //   from: walletAddress.owner
+    // })
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
