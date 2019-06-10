@@ -24,6 +24,7 @@ import {
   selectPostAnswer,
   checkSelected,
   getWriteUser,
+  getPostSelected,
   updatePostView,
   likePost
 } from '../controllers/post.controller'
@@ -38,13 +39,14 @@ const router = Router()
 
 // plaza
 router.get('/plaza', getPostPlazaList)
-router.get('/plaza/:postId', isLoggedIn, getPostPlaza)
+router.get('/plaza/:postId', getPostPlaza)
 router.post('/plaza', isLoggedIn, addPostPlaza)
 router.put('/plaza/:postId', isLoggedIn, hasPost, updatePostPlaza)
 
 // Question
 router.get('/question', getPostQuestionList)
 router.get('/question/:postId', isLoggedIn, getPostQuestion)
+router.get('/question/getSelected/:postId_Q', isLoggedIn, getPostSelected)
 router.post('/question', isLoggedIn, addPostQuestion)
 router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
 router.put('/question/:postId', isLoggedIn, updatePostQuestion)

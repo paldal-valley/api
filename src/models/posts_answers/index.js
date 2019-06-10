@@ -140,6 +140,7 @@ const getList = (options = {}) => {
       p.content,
       p.view,
       p.recommended,
+      pa.id AS postId_A,
       pa.isSelected,
       u.id AS userId,
       u.name AS userName,

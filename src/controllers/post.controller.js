@@ -83,6 +83,9 @@ const getWriteUser = async (req, res, next) =>{
   }
 }
 
+
+
+
 const updatePostView = async (req, res, next) => {
   try {
     const { body: payload } = req
@@ -177,7 +180,15 @@ const updatePostQuestion = async (req, res, next) => {
   }
 }
 
-
+const getPostSelected = async (req, res, next) => {
+  try {
+    const { postId_Q } = req.params
+    const result = await PostQuestion.getPostSelected(postId_Q)
+    return res.status(200).json(result)
+  } catch (err) {
+    return next(err)
+  }
+}
 
 /* ------------ Answer ------------- */
 
@@ -188,6 +199,7 @@ const getPostAnswer = async (req, res, next) => {
     const { postId = 0 } = req.params
     const { query: options } = req.query
     const result = await PostAnswer.getOne(postId, options)
+    console.log(result)
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
@@ -416,5 +428,6 @@ export {
   selectPostAnswer,
   checkSelected,
   updatePostView,
-  likePost
+  likePost,
+  getPostSelected
 }
