@@ -1,4 +1,5 @@
 import User from '../models/users'
+import { getContract, walletAddress } from '../utils'
 import { encryption, timestamp } from '@utils'
 
 /*
@@ -6,21 +7,9 @@ import { encryption, timestamp } from '@utils'
   DAO는 데이터에 접근해서 controller로 올바른 데이터를 전달해주는 역할만 할 것
  */
 
-const add = async (req, res, next) => {
-  const { body: options } = req
-  console.log(options);
-  try {
-    const result = await User.add(options)
-    return res.status(200).json(result)
-  } catch (err) {
-    return res.status(500).json({
-      msg: err
-    })
-  }
-}
-
 const addUser = async (req, res, next) => {
   try {
+    const doajouContract = await getContract()
     const { body: userInfo } = req
     if (!userInfo.email) return next(Error('email is required'))
     if (!userInfo.password) return next(Error('password is required'))
