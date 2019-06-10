@@ -72,7 +72,6 @@ const updateUser = async (req, res, next) => {
 }
 
 export {
-  add,
   addUser,
   resetUserPassword,
   updateUser
