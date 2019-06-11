@@ -577,5 +577,7 @@ const ABI = [
 ]
 // const address = networks['4649'].address
 // const address = networks[keys[lastIdxOfKeys]].address
+// const address = "0x5b1869d9a4c187f2eaa108f3062412ecf0526b24"
 const address = "0x40f65781fbbd220ee7a4ba2d04ee78981be5ee0d"
+
 export { ABI, address }
