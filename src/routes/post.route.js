@@ -10,6 +10,7 @@ import {
   addPostPlaza,
   updatePostPlaza,
   getPostQuestionList,
+  getPostUnselectedQuestionList,
   getPostQuestion,
   addPostQuestion,
   updatePostQuestion,
@@ -24,6 +25,7 @@ import {
   selectPostAnswer,
   checkSelected,
   getWriteUser,
+  getPostSelected,
   updatePostView,
   likePost
 } from '../controllers/post.controller'
@@ -43,8 +45,10 @@ router.post('/plaza', isLoggedIn, addPostPlaza)
 router.put('/plaza/:postId', isLoggedIn, hasPost, updatePostPlaza)
 
 // Question
+router.get('/question/unselected', getPostUnselectedQuestionList)
 router.get('/question', getPostQuestionList)
 router.get('/question/:postId', isLoggedIn, getPostQuestion)
+router.get('/question/getSelected/:postId_Q', isLoggedIn, getPostSelected)
 router.post('/question', isLoggedIn, addPostQuestion)
 router.put('/question/:postId', isLoggedIn, hasPost, updatePostQuestion)
 router.put('/question/:postId', isLoggedIn, updatePostQuestion)

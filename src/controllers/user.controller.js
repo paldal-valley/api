@@ -51,7 +51,7 @@ const resetUserPassword = async (req, res, next) => {
   try {
     const { body: userInfo } = req
     const { token } = req.params
-
+    
     userInfo.password = encryption.createPassword(userInfo.password)
     let resetPasswordExpires = timestamp.changeTimestampFormat(userInfo.resetPasswordExpires)
     userInfo.resetPasswordExpires = null
@@ -75,7 +75,7 @@ const updateUser = async (req, res, next) => {
 
     if(isValidUser){
       userInfo.password? userInfo.password = encryption.createPassword(userInfo.password) : delete userInfo.password
-
+      
       const payload = { ...userInfo }
       const result = await User.updateOne(userId, payload)
       return res.status(200).json(result)
