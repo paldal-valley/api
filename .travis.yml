@@ -9,8 +9,6 @@ after_success:
 before_install:
 - openssl aes-256-cbc -K $encrypted_8ef018dbaa66_key -iv $encrypted_8ef018dbaa66_iv
   -in secrets.tar.enc -out secrets.tar -d
-- openssl aes-256-cbc -K $encrypted_286dcab30e78_key -iv $encrypted_286dcab30e78_iv
-  -in secrets.tar.enc -out secrets.tar -d
 - tar xvf secrets.tar
 before_deploy:
 - rm -rf node_modules
