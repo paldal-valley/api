@@ -6,7 +6,41 @@ import PostReview from '@dao/posts_review'
 import User from '@dao/users'
 import Comment from '@dao/comments'
 import Like from '@dao/likes'
-import { getContract, walletAddress } from '../utils'
+import { web3, getContract, walletAddress } from '../utils'
+
+const Tx = require('ethereumjs-tx').Transaction
+const owner = process.env.OWNER_ADDRESS
+const manager = process.env.MANAGER_ADDRESS
+
+const ownerPrivKey = process.env.OWNER_PRIV_KEY
+const managerPrivKey = process.env.MANAGER_PRIV_KEY
+const contractAddress = '0x40f65781fbbd220ee7a4ba2d04ee78981be5ee0d'
+
+const foo = async (req, res, next) => {
+  try {
+    const doajouContract = await getContract()
+    const txCount = await web3.eth.getTransactionCount(owner)
+    const data = await doajouContract.methods.offerWelcomeToken('0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1').encodeABI()
+
+    // const txObject = {
+    //   from: owner,
+    //   nonce:    web3.utils.toHex(txCount),
+    //   gasLimit: web3.utils.toHex(800000),
+    //   to: contractAddress,
+    //   chainId: 3,
+    //   data,
+    // }
+    //
+    // const signed = await web3.eth.accounts.signTransaction(txObject, ownerPrivKey)
+    // const transaction = web3.eth.sendSignedTransaction(signed.rawTransaction)
+    res.send('transaction')
+  } catch (err) {
+    console.log(err)
+    res.json({
+      msg: err
+    })
+  }
+}
 
 const addPost = async (req, res, next) => {
   try {
@@ -57,12 +91,23 @@ const deletePost = async (req, res, next) => {
     // 만약 질문 게시글을 삭제한다면 수수료 발생
 
     const postQuestion = await PostQuestion.getOne(postId)
-    console.log(postQuestion)
     if (Object.keys(postQuestion).length) {
       const doajouContract = await getContract()
-      doajouContract.methods.removeQuestion(postQuestion.id).send({
-        from: walletAddress.manager
-      })
+
+      const txCount = await web3.eth.getTransactionCount(owner, 'pending')
+      const data = await doajouContract.methods.removeQuestion(postQuestion.id).encodeABI()
+
+      const txObject = {
+        from: owner,
+        nonce: web3.utils.toHex(txCount),
+        gasLimit: web3.utils.toHex(800000),
+        to: contractAddress,
+        chainId: 3,
+        data,
+      }
+
+      const signed = await web3.eth.accounts.signTransaction(txObject, ownerPrivKey)
+      web3.eth.sendSignedTransaction(signed.rawTransaction)
     }
     const result = await Post.deleteOne(postId)
     return res.status(200).json(result)
@@ -99,7 +144,7 @@ const likePost = async (req, res, next) => {
   try {
     const { body: payload } = req
     const { postId } = req.params
-    
+
     const likeId = await Like.check(postId, payload.userId)
     if (likeId) {
       Like.destroy(likeId)
@@ -145,7 +190,7 @@ const getPostQuestionList = async (req, res, next) => {
 const addPostQuestion = async (req, res, next) => {
   try {
     const { body } = req
-    const { post, postQuestion } = body
+    const { post, postQuestion, userWalletAddress, approveObj } = body
     // const { reward: postQuestion } = postQuestion
     const { categoryId } = req.query
     const { reward } = postQuestion
@@ -248,9 +293,20 @@ const selectPostAnswer = async (req, res, next) => {
       const { userId } = await Post.getOne(postId)
       const { walletAddress: answerer } = await User.getOne(userId)
 
-      await doajouContract.methods.answerSelected(postId_Q, answerer).send({
-        from: walletAddress.manager
-      })
+      const txCount = await web3.eth.getTransactionCount(owner, 'pending')
+      const data = await doajouContract.methods.answerSelected(postId_Q, answerer).encodeABI()
+
+      const txObject = {
+        from: owner,
+        nonce: web3.utils.toHex(txCount),
+        gasLimit: web3.utils.toHex(800000),
+        to: contractAddress,
+        chainId: 3,
+        data,
+      }
+
+      const signed = await web3.eth.accounts.signTransaction(txObject, ownerPrivKey)
+      web3.eth.sendSignedTransaction(signed.rawTransaction)
     }
 
     return res.status(200).json({ success: true })
@@ -391,6 +447,7 @@ const updatePostReview = async (req, res, next) => {
 
 
 export {
+  foo,
   getPost,
   getPostList,
   getWriteUser,

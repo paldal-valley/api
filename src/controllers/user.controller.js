@@ -1,11 +1,15 @@
 import User from '../models/users'
-import { getContract, walletAddress } from '../utils'
+import { getContract, walletAddress, web3 } from '../utils'
 import { encryption, timestamp } from '@utils'
 
 /*
   비즈니스로직은 DAO(model)가 아닌 controller에서
   DAO는 데이터에 접근해서 controller로 올바른 데이터를 전달해주는 역할만 할 것
  */
+
+const owner = process.env.OWNER_ADDRESS
+const contractAddress = '0x40f65781fbbd220ee7a4ba2d04ee78981be5ee0d'
+const ownerPrivKey = process.env.OWNER_PRIV_KEY
 
 const addUser = async (req, res, next) => {
   try {
@@ -22,9 +26,21 @@ const addUser = async (req, res, next) => {
     const result = await User.addOne(payload)
     const { walletAddress: userWallet } = await User.getOne(result.insertId)
 
-    await doajouContract.methods.offerWelcomeToken(userWallet).send({
-      from: walletAddress.owner
-    })
+    const txCount = await web3.eth.getTransactionCount(owner)
+    const data = await doajouContract.methods.offerWelcomeToken(userWallet).encodeABI()
+
+    const txObject = {
+      from: owner,
+      nonce:    web3.utils.toHex(txCount),
+      gasLimit: web3.utils.toHex(800000),
+      to: contractAddress,
+      chainId: 3,
+      data,
+    }
+
+    const signed = await web3.eth.accounts.signTransaction(txObject, ownerPrivKey)
+    web3.eth.sendSignedTransaction(signed.rawTransaction)
+
     return res.status(200).json(result)
   } catch (err) {
     return next(err)
