@@ -1,15 +1,15 @@
 import User from '../models/users'
 import { getContract, web3 } from '../utils'
 import { encryption, timestamp } from '@utils'
-
+import { blockMeta } from '../utils'
 /*
   비즈니스로직은 DAO(model)가 아닌 controller에서
   DAO는 데이터에 접근해서 controller로 올바른 데이터를 전달해주는 역할만 할 것
  */
 
-const owner = process.env.OWNER_ADDRESS
-const contractAddress = '0x40f65781fbbd220ee7a4ba2d04ee78981be5ee0d'
-const ownerPrivKey = process.env.OWNER_PRIV_KEY
+const owner = blockMeta.wallet.address.owner
+const ownerPrivKey = blockMeta.wallet.privKey.owner
+const contractAddress = blockMeta.contractAddress
 
 const addUser = async (req, res, next) => {
   try {
