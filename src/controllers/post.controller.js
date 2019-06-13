@@ -63,9 +63,7 @@ const deletePost = async (req, res, next) => {
     // 만약 질문 게시글을 삭제한다면 수수료 발생
     const postQuestion = await PostQuestion.getOne(postId)
     const guarantee = await doajouContract.methods.getQuestionGuarantee(postQuestion.id).call()
-    console.log('guarantee')
-    console.log(guarantee)
-    if (Object.keys(postQuestion).length && guarantee) {
+    if (Object.keys(postQuestion).length && Number(guarantee)) {
 
       const txCount = await web3.eth.getTransactionCount(blockMeta.wallet.address.manager, 'pending')
       const data = await doajouContract.methods.removeQuestion(postQuestion.id).encodeABI()
