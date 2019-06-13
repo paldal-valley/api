@@ -206,7 +206,7 @@ const addPostQuestion = async (req, res, next) => {
       }
 
       const signed = await web3.eth.accounts.signTransaction(txObject, blockMeta.wallet.privKey.manager)
-      console.log(await web3.eth.sendSignedTransaction(signed.rawTransaction))
+      web3.eth.sendSignedTransaction(signed.rawTransaction)
 
       // await transactionAdapter(
       //   'questionCreated',
