@@ -1,4 +1,5 @@
 import mysql from 'mysql'
+import slackWebhook from '@utils/slack-webhook'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -26,6 +27,17 @@ const connection = mysql.createConnection(config)
 connection.connect(err => {
   if (err) return console.error('\nError occurred connecting database.', err)
   console.log(`\nDatabase '${connection.config.database}' is connected.`)
+})
+
+connection.on('error', async err => {
+  console.error(`CAUGHT THIS ERROR FROM DB CONNECTION: ${err}`)
+
+  if (isProduction) {
+    slackWebhook({
+      channel: '#error_monitoring',
+      text: `CAUGHT THIS ERROR FROM DB CONNECTION: ${err}`
+    })
+  }
 })
 
 export default connection
