@@ -5,6 +5,7 @@ import blockMeta from './block-meta'
 import getContract from './get-contract'
 import web3 from './get-web3'
 import transactionAdapter from './transaction-adapter'
+import slackWebHook from './slack-webhook'
 
 export {
   encryption,
@@ -13,5 +14,6 @@ export {
   web3,
   blockMeta,
   getContract,
-  transactionAdapter
+  transactionAdapter,
+  slackWebHook
 }
