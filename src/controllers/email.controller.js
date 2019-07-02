@@ -21,7 +21,7 @@ const send_confirm_email = async (req, res, next) => {
     from: '"Ajou Coin 👻"<ajoucoin@ajoucoin.com>', // sender address
     to: options.email,
     subject: "DoAjou 이메일 인증 메일",
-    text:  '인증코드는 ' + options.token + '입니다.',
+    text:  '인증코드는 ' + options.token + '입니다. ',
     html: "<b>"+"인증코드는 "+ options.token + " 입니다."+"</b>" // html body
   };
 
