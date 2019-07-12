@@ -156,7 +156,7 @@ const updateOne = (id = 0, payload = {}) => {
     })
   })
 }
-
+ 
 
 export default {
   addOne,
